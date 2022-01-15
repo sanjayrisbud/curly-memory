@@ -51,6 +51,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cov_html/
+results.txt
 
 # Translations
 *.mo
