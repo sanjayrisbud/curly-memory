@@ -4,6 +4,13 @@ import pytest
 from parsers.parser import Parser
 
 
+def test_get_data():
+    """Unit test for get_data()."""
+    parser = Parser()
+    with pytest.raises(AttributeError):
+        parser.get_data()
+
+
 def test_parse():
     """Unit test for parse()."""
     parser = Parser()
