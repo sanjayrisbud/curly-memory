@@ -37,10 +37,19 @@ def test_archive():
     with open(extractor.path / "dummy", "wb") as _:
         pass
     archived_file = extractor.archive()
-    assert not extractor.file_exists()
     new_location = Path(archived_file)
     assert new_location.exists()
     new_location.unlink()
+    extractor.file_object.unlink()
+
+
+def test_is_stale():
+    """Unit test for is_stale()."""
+    extractor = Extractor("dummy")
+    with open(extractor.path / "dummy", "wb") as _:
+        pass
+    assert not extractor.is_stale()
+    extractor.file_object.unlink()
 
 
 def test_extract():

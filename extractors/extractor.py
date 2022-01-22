@@ -1,6 +1,6 @@
 """ Defines Extractor class. """
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 
@@ -26,7 +26,12 @@ class Extractor:
         new_name = str(
             self.path / "archive" / self.file_object.name
         ) + self.date.strftime("_%Y-%m-%d")
-        return shutil.move(old_name + suffix, new_name + suffix)
+        return shutil.copy(old_name + suffix, new_name + suffix)
+
+    def is_stale(self):
+        """Determine whether associated file is already stale."""
+        modified = datetime.fromtimestamp(self.file_object.stat().st_mtime)
+        return self.date - modified > timedelta(days=15)
 
     def extract(self):
         """Extract data from file."""
