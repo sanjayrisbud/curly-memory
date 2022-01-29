@@ -14,7 +14,8 @@ class Parser:
 
     def get_data(self):
         """Extract and parse the data from the file."""
-        self.extractor.extract()
+        if self.extractor:
+            self.extractor.extract()
         self.parse()
 
     def parse(self):
