@@ -18,7 +18,9 @@ class BankAccountsParser(Parser):
         # determine the number of deposit accounts
         deposits = int(lines[2].split("(")[1][0])
         for i in range(1, deposits + 1):
-            self.create_entry("BPI", lines[4 * i + 0], lines[4 * i + 1], lines[4 * i + 2])
+            self.create_entry(
+                "BPI", lines[4 * i + 0], lines[4 * i + 1], lines[4 * i + 2]
+            )
 
         # get the credit card
         if len(lines) > 20:
