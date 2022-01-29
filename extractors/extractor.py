@@ -21,10 +21,10 @@ class Extractor:
 
     def archive(self):
         """Move the file to the archive folder, appending current date."""
-        old_name = str(self.path / self.file_object.name)
+        old_name = str(self.path / self.file_object.stem)
         suffix = self.file_object.suffix
         new_name = str(
-            self.path / "archive" / self.file_object.name
+            self.path / "archive" / self.file_object.stem
         ) + self.date.strftime("_%Y-%m-%d")
         return shutil.copy(old_name + suffix, new_name + suffix)
 
