@@ -15,6 +15,7 @@ class AmortizationScheduleParser(Parser):
     def parse(self):
         """Parse the webpage data."""
         soup = self.extractor.raw_data
+        self.parsed_data.append(None)
         amorts = soup.find("tbody", id="amort_sched")
         for row in amorts.find_all("tr"):
             fields = [
@@ -23,4 +24,7 @@ class AmortizationScheduleParser(Parser):
             ]
             if fields[0] == "":
                 continue
-            self.append(AmortizationPayment(*fields))
+            record = AmortizationPayment(*fields)
+            if self.date > record.date:
+                self.total_amount = record.balance
+                self.parsed_data[0] = record
