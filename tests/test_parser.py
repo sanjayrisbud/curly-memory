@@ -7,7 +7,7 @@ from parsers.parser import Parser
 def test_get_data():
     """Unit test for get_data()."""
     parser = Parser()
-    with pytest.raises(AttributeError):
+    with pytest.raises(Exception):
         parser.get_data()
 
 
