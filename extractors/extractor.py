@@ -1,32 +1,16 @@
 """ Defines Extractor class. """
-import shutil
 from datetime import datetime, timedelta
-from pathlib import Path
+
+from file_processor import FileProcessor
 
 
-class Extractor:
+class Extractor(FileProcessor):
     """Parent class of all extractors."""
 
     def __init__(self, filename, path=None, date=None):
-        folder = path or "C:/Users/sanjay s risbud/Dropbox/statements"
-        self.path = Path(folder)
-        self.file_object = self.path / filename
-        self.file_type = ""
+        super().__init__(filename, path, date)
         self.raw_data = None
-        self.date = date or datetime.today()
-
-    def file_exists(self):
-        """Return True if file exists, False otherwise."""
-        return self.file_object.exists()
-
-    def archive(self):
-        """Move the file to the archive folder, appending current date."""
-        old_name = str(self.path / self.file_object.stem)
-        suffix = self.file_object.suffix
-        new_name = str(
-            self.path / "archive" / self.file_object.stem
-        ) + self.date.strftime("_%Y-%m-%d")
-        return shutil.copy(old_name + suffix, new_name + suffix)
+        self.file_type = ""
 
     def is_stale(self):
         """Determine whether associated file is already stale."""
