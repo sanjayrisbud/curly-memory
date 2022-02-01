@@ -1,4 +1,5 @@
 """Defines the Parser class."""
+import logging
 from datetime import datetime
 
 
@@ -15,6 +16,10 @@ class Parser:
     def get_data(self):
         """Extract and parse the data from the file."""
         if self.extractor:
+            if self.extractor.is_stale():
+                logging.warning(
+                    "%s is stale, consider re-downloading.", self.extractor.file_object
+                )
             self.extractor.extract()
         self.parse()
 
