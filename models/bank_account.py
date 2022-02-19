@@ -1,8 +1,16 @@
 """Defines BankAccount class."""
+from sqlalchemy import Column, Float, String
+from models import Base, ModelsParent
 
 
-class BankAccount:
+class BankAccount(Base, ModelsParent):
     """Model for a bank account/insurance policy."""
+
+    __tablename__ = "bank_accounts"
+    bank = Column(String(50))
+    account_alias = Column(String(50))
+    account_number = Column(String(50))
+    balance = Column(Float)
 
     def __init__(self, *args):
         date, bank, account_alias, account_number, balance = args

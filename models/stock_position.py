@@ -1,8 +1,16 @@
 """Defines StockPosition class."""
+from sqlalchemy import Column, Float, Integer, String
+from models import Base, ModelsParent
 
 
-class StockPosition:
+class StockPosition(Base, ModelsParent):
     """Model for stock/mutual fund position."""
+
+    __tablename__ = "stocks"
+    stock = Column(String(10))
+    shares = Column(Integer)
+    mkt_value = Column(Float)
+    total_cost = Column(Float)
 
     def __init__(self, *args):
         date, stock, shares, mkt_value, total_cost = args
