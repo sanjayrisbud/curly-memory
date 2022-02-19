@@ -3,7 +3,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import NamedStyle, PatternFill, Border, Side, Alignment, Font
 from openpyxl.styles.borders import BORDER_NONE, BORDER_THIN
 from openpyxl.utils import get_column_letter
-
+from models.summary import Summary
 from main.file_processor import FileProcessor
 
 
@@ -28,6 +28,7 @@ class StatementWriter(FileProcessor):
         self.row = 1
         self.create_liabilities_sheet(liabilities)
 
+        self.store_in_database()
         template.save(self.file_object)
         return self.archive()
 
@@ -45,15 +46,30 @@ class StatementWriter(FileProcessor):
             "RealEstate": "B12",
             "AmortizationSchedule": "B18",
         }
+        summary_entries = []
+
         for asset_class in self.data.get("asset_parsers", []):
             type_ = asset_class.__class__.__name__.replace("Parser", "")
             sheet[relevant_cells[type_]] = asset_class.total_amount
+            summary_entries.append(
+                Summary(self.date, "ASSET", type_, asset_class.total_amount)
+            )
+
         for liability_class in self.data.get("liability_parsers", []):
             type_ = liability_class.__class__.__name__.replace("Parser", "")
             sheet[relevant_cells[type_]] = liability_class.total_amount
+            summary_entries.append(
+                Summary(self.date, "LIABILITY", type_, liability_class.total_amount)
+            )
 
         if self.data.get("credit_card", None):
-            sheet["B16"] = self.data["credit_card"].balance
+            total_amount = self.data["credit_card"].balance
+            sheet["B16"] = total_amount
+            summary_entries.append(
+                Summary(self.date, "LIABILITY", "CreditCard", total_amount)
+            )
+
+        self.data["summary_entries"] = summary_entries
 
     def create_assets_sheet(self, sheet):
         """Create assets sheet with the mined data."""
@@ -178,6 +194,19 @@ class StatementWriter(FileProcessor):
         sheet.cell(row=self.row, column=i + 1, value=total).style = "total_value_style"
 
         self.row += 2
+
+    def store_in_database(self):
+        """Store various data points in the database for later use."""
+        summary_entries = self.data.get("summary_entries", None)
+        if not summary_entries:
+            return
+        Summary.insert_many(summary_entries)
+        for bank_account in self.data["asset_parsers"][0].parsed_data:
+            if not bank_account.is_asset():
+                continue
+            bank_account.insert()
+        for stock in self.data["asset_parsers"][1].parsed_data:
+            stock.insert()
 
     @staticmethod
     def register_styles(workbook):
