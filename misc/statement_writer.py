@@ -13,7 +13,7 @@ class StatementWriter(FileProcessor):
     def __init__(self, filename, path, date):
         super().__init__(filename, path, date)
         self.data = None
-        self.row = self.column = 1
+        self.row = 1
 
     def run(self, data):
         """Perform class logic."""
@@ -25,7 +25,7 @@ class StatementWriter(FileProcessor):
 
         self.populate_summary_sheet(template["Summary"])
         self.create_assets_sheet(assets)
-        self.row = self.column = 1
+        self.row = 1
         self.create_liabilities_sheet(liabilities)
 
         template.save(self.file_object)
@@ -57,12 +57,33 @@ class StatementWriter(FileProcessor):
 
     def create_assets_sheet(self, sheet):
         """Create assets sheet with the mined data."""
+        if not self.data.get("asset_parsers", None):
+            return
+        self.write_bank_accounts_info(sheet, self.data["asset_parsers"][0])
         self.write_mutual_funds_and_bonds_info(sheet, self.data["asset_parsers"][3])
         self.write_portfolio_info(sheet, self.data["asset_parsers"][1])
+        self.write_life_insurance_info(sheet, self.data["asset_parsers"][2])
+        self.write_real_estate_info(sheet, self.data["asset_parsers"][4])
         self.adjust_column_widths(sheet)
 
     def create_liabilities_sheet(self, sheet):
         """Create liabilities sheet with the mined data."""
+        self.write_credit_card_info(sheet, self.data["credit_card"])
+        amortizations = self.data.get("liability_parsers", [])
+        if len(amortizations) == 1:
+            self.write_current_loan_balance(sheet, amortizations[0])
+        self.adjust_column_widths(sheet)
+
+    def write_bank_accounts_info(self, sheet, *args):
+        """Write out the information about bank accounts."""
+        title = "Bank Accounts"
+        header = ["Account Number", "Account Alias", "Bank", "Balance"]
+        entries = [
+            [record.account_number, record.account_alias, record.bank, record.balance]
+            for record in args[0].parsed_data
+            if record.account_alias != "MasterCard"
+        ]
+        self.create_section(sheet, title, header, entries, args[0].total_amount)
 
     def write_mutual_funds_and_bonds_info(self, sheet, *args):
         """Write out the information about mutual funds and bonds."""
@@ -84,6 +105,53 @@ class StatementWriter(FileProcessor):
         ]
         self.create_section(sheet, title, header, entries, args[0].total_amount)
 
+    def write_life_insurance_info(self, sheet, *args):
+        """Write out the information about life insurance policies."""
+        title = "Life Insurance"
+        header = ["Policy Name", "Company", "Policy Number", "Face Amount"]
+        entries = [
+            [record.account_alias, record.bank, record.account_number, record.balance]
+            for record in args[0].parsed_data
+        ]
+        self.create_section(sheet, title, header, entries, args[0].total_amount)
+
+    def write_real_estate_info(self, sheet, *args):
+        """Write out the information about real estate."""
+        title = "Real Estate"
+        header = [
+            "Description / Location",
+            "Original Cost",
+            "Purchase Date",
+            "Market Value",
+        ]
+        entries = [
+            [record.address, record.price, record.year_bought, record.market_value]
+            for record in args[0].parsed_data
+        ]
+        self.create_section(sheet, title, header, entries, args[0].total_amount)
+
+    def write_current_loan_balance(self, sheet, *args):
+        """Write out the information about current loan balance."""
+        title = "Mortgage / real estate loans payable"
+        header = [
+            "Name of Creditor",
+            "Original Amount",
+            "Monthly Payment",
+            "Amount Owing",
+        ]
+        entries = [
+            ["Philippine Savings Bank", 1_960_000, record.amount, record.balance]
+            for record in args[0].parsed_data
+        ]
+        self.create_section(sheet, title, header, entries, args[0].total_amount)
+
+    def write_credit_card_info(self, sheet, *args):
+        """Write out the information about the credit card."""
+        title = "Credit card & charge card debt"
+        header = ["Account Number", "Bank", "Balance"]
+        entries = [[args[0].account_number, args[0].bank, args[0].balance]]
+        self.create_section(sheet, title, header, entries, args[0].balance)
+
     def create_section(self, sheet, *args):
         """Create a section of the sheet."""
         title, header, entries, total = args
@@ -93,6 +161,7 @@ class StatementWriter(FileProcessor):
         for column, field in enumerate(header, start=1):
             sheet.cell(row=self.row, column=column, value=field).style = "header_style"
 
+        i = 0
         for i, record in enumerate(entries, start=1):
             for column, field in enumerate(record, start=1):
                 sheet.cell(

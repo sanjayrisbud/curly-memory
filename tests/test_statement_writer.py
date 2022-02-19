@@ -22,5 +22,6 @@ def test_populate_summary_sheet():
     stmt = StatementWriter("dummy", None, datetime(2000, 1, 1))
     workbook = Workbook()
     worksheet = workbook.create_sheet()
-    stmt.populate_summary_sheet(worksheet, {})
+    stmt.data = {}
+    stmt.populate_summary_sheet(worksheet)
     assert worksheet["A3"].value == "January 2000"
