@@ -3,7 +3,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-from misc.file_processor import FileProcessor
+from main.file_processor import FileProcessor
 
 
 def test_init():

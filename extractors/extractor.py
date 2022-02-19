@@ -1,7 +1,7 @@
 """ Defines Extractor class. """
 from datetime import datetime, timedelta
 
-from misc.file_processor import FileProcessor
+from main.file_processor import FileProcessor
 
 
 class Extractor(FileProcessor):

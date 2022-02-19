@@ -4,7 +4,7 @@ from openpyxl.styles import NamedStyle, PatternFill, Border, Side, Alignment, Fo
 from openpyxl.styles.borders import BORDER_NONE, BORDER_THIN
 from openpyxl.utils import get_column_letter
 
-from misc.file_processor import FileProcessor
+from main.file_processor import FileProcessor
 
 
 class StatementWriter(FileProcessor):
@@ -68,6 +68,9 @@ class StatementWriter(FileProcessor):
 
     def create_liabilities_sheet(self, sheet):
         """Create liabilities sheet with the mined data."""
+        if not self.data.get("credit_card", None):
+            return
+
         self.write_credit_card_info(sheet, self.data["credit_card"])
         amortizations = self.data.get("liability_parsers", [])
         if len(amortizations) == 1:

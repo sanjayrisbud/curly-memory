@@ -4,7 +4,7 @@ from pathlib import Path
 
 from openpyxl import Workbook
 
-from misc.statement_writer import StatementWriter
+from main.statement_writer import StatementWriter
 
 
 def test_run():
