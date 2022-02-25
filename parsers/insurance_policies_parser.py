@@ -1,5 +1,6 @@
 """Defines InsurancePoliciesParser class."""
-from extractors.pdf_extractor import PDFExtractor
+import re
+from extractors.webpage_extractor import WebpageExtractor
 from models.bank_account import BankAccount
 from parsers.parser import Parser
 
@@ -9,21 +10,26 @@ class InsurancePoliciesParser(Parser):
 
     def __init__(self, filename, path, date):
         super().__init__(path, date)
-        self.extractor = PDFExtractor(filename, self.path, self.date)
+        self.extractor = WebpageExtractor(filename, self.path, self.date)
 
     def parse(self):
         """Parse the policies' information."""
-        lines = self.extractor.raw_data[0].split("\n")
+        policy_rows = self.extractor.raw_data.find_all(
+            "tr", attrs={"ng-repeat": re.compile(r".*policy.*")}
+        )
 
-        # get only policy-relevant lines and clean up each one
-        policy_lines = [
-            line.replace("PHP", "").replace("Paid-up", "")[line.index("0") :].strip()
-            for line in lines
-            if " SUN " in line
-        ]
-
-        for line in policy_lines:
-            policy_number, *policy_name, face_amount = line.split(" ")
+        face_amounts = {
+            "030021198": 250_000,
+            "031300038": 560_000,
+            "0800121961": 44_368,
+            "0800261739": 25_000,
+            "0808250019": 275_000,
+        }
+        for policy in policy_rows:
+            tds = policy.find_all("td")
+            policy_number = tds[0].text.strip()
+            policy_name = tds[1].text.strip()
+            face_amount = face_amounts[policy_number]
 
             # since life insurance policies are currently mortgaged to PSBank
             # exclude them from list
@@ -33,9 +39,9 @@ class InsurancePoliciesParser(Parser):
             record = BankAccount(
                 self.date,
                 "Sunlife",
-                " ".join(policy_name).strip(),
+                policy_name,
                 policy_number,
-                face_amount.replace(",", ""),
+                face_amount,
             )
             self.parsed_data.append(record)
             self.total_amount += record.balance

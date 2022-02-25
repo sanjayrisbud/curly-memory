@@ -1,5 +1,6 @@
 """Defines MutualFundsParser class."""
-from extractors.pdf_extractor import PDFExtractor
+import re
+from extractors.webpage_extractor import WebpageExtractor
 from models.stock_position import StockPosition
 from parsers.parser import Parser
 
@@ -9,35 +10,36 @@ class MutualFundsParser(Parser):
 
     def __init__(self, filename, path, date):
         super().__init__(path, date)
-        self.extractor = PDFExtractor(filename, self.path, self.date)
+        self.extractor = WebpageExtractor(filename, self.path, self.date)
 
     def parse(self):
         """Parse the mutual funds' information."""
-        lines = self.extractor.raw_data[0].split("\n")
+        fund_rows = self.extractor.raw_data.find_all(
+            "tr", attrs={"ng-repeat": re.compile(r".*fund.*")}
+        )
 
-        # get only fund-relevant lines and clean up each one
-        fund_lines = [
-            line.replace("PHP", "")
-            .replace("USD", "")
-            .replace("Individual", "")[line.index("0") :]
-            .strip()
-            for line in lines
-            if "00406538CF01" in line
-        ]
-
-        for line in fund_lines:
-            _, *fund_name, market_value = line.split(" ")
+        for fund in fund_rows:
+            tds = fund.find_all("td")
+            fund_name = tds[1].text.strip()
+            fund_shares = int(tds[2].text.replace(",", "").replace(".00", "").strip())
+            market_value = float(
+                tds[4]
+                .text.replace(",", "")
+                .replace("PHP", "")
+                .replace("USD", "")
+                .strip()
+            )
 
             record = StockPosition(
                 self.date,
-                " ".join(fund_name).strip(),
-                "0",
-                market_value.replace(",", ""),
-                market_value.replace(",", ""),
+                fund_name,
+                fund_shares,
+                market_value,
+                market_value,
             )
 
             # simply set the peso->dollar rate to 50->1
-            if fund_name[0].startswith("DOLLAR"):
+            if fund_name.startswith("DOLLAR"):
                 record.mkt_value *= 50
                 record.total_cost = record.mkt_value
 

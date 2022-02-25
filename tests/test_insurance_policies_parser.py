@@ -1,26 +1,25 @@
 """Tests for the InsurancePoliciesParser class."""
-
+from bs4 import BeautifulSoup
 from parsers.insurance_policies_parser import InsurancePoliciesParser
 
 
 def test_parse():
     """Unit test for parse()"""
     parser = InsurancePoliciesParser("dummy", None, None)
-    temp = [
-        "12/31/21, 4:47 PM Sun Life Financial - Philippines",
-        "Summary of accounts",
-        "CUSTOMIZE ACCOUNT LIST",
-        "()",
-        "Life Policies",
-        "SANJAY RISBUD",
-        "MY ACCOUNT Policy number Policy name Status Face amount",
-        "\uf03a   All",
-        "0123456 SUN CLASSIC LIFE Paid-up PHP 607",
-        "\uf0e9   Life ()",
-        "This site uses cookies to provide the best experience possible. ",
-        "(http://www.sunlife.com/PSLF/philippines/Privacy/Our+online+policy?vgnLocale=en_CA).",
-        "https://mobile.sunlife.com.ph/Sunlife/apps/services/www/Sunlife 1/1",
-    ]
-    parser.extractor.raw_data = ["\n".join(temp)]
+    temp = """
+								<tr ng-repeat="policy in lifePolicies track by $index">
+									<td><span class="ng-binding">0800261739</span> 
+                                    </td>
+									<td><span class="ng-binding">SUN CLASSIC LIFE </span></td>
+									<td><span class="ng-binding">Paid-up</span></td>
+									<td class="last">
+										<label class="control control--checkbox">
+											<input type="checkbox" id="lifeChk0" ng-model="life[$index]" ng-true-value="'N'" ng-false-value="'Y'" ng-change="stateChange(life)" class="ng-pristine ng-untouched ng-valid">
+											<div class="control__indicator checked" id="life0" ng-class="{'checked': life[$index] == 'N'}"></div>
+										</label>
+									</td>
+								</tr>
+    """
+    parser.extractor.raw_data = BeautifulSoup(temp)
     parser.parse()
-    assert parser.parsed_data[0].balance == 607
+    assert parser.parsed_data[0].balance == 25_000
