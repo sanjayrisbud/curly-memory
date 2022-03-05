@@ -11,7 +11,9 @@ class FileProcessor:
         self.path = Path(path)
         self.file_object = self.path / filename
         self.date = date or datetime.today()
-        self.archive_path = Path(archive_path) if archive_path else self.path / "archive"
+        self.archive_path = (
+            Path(archive_path) if archive_path else self.path / "archive"
+        )
 
     def file_exists(self):
         """Return True if file exists, False otherwise."""
@@ -21,7 +23,7 @@ class FileProcessor:
         """Move the file to the archive folder, appending current date."""
         old_name = str(self.path / self.file_object.stem)
         suffix = self.file_object.suffix
-        new_name = str(
-            self.archive_path / self.file_object.stem
-        ) + self.date.strftime("_%Y-%m-%d")
+        new_name = str(self.archive_path / self.file_object.stem) + self.date.strftime(
+            "_%Y-%m-%d"
+        )
         return shutil.copy(old_name + suffix, new_name + suffix)
