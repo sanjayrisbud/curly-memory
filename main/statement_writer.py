@@ -9,8 +9,9 @@ from models.summary import Summary
 class StatementWriter:
     """Class used to write out the financial statement."""
 
-    def __init__(self, statement):
+    def __init__(self, statement, db_engine):
         self.statement = statement
+        self.db_engine = db_engine
         self.data = None
         self.row = 1
 
@@ -57,7 +58,12 @@ class StatementWriter:
             type_ = liability_class.__class__.__name__.replace("Parser", "")
             sheet[relevant_cells[type_]] = liability_class.total_amount
             summary_entries.append(
-                Summary(self.statement.date, "LIABILITY", type_, liability_class.total_amount)
+                Summary(
+                    self.statement.date,
+                    "LIABILITY",
+                    type_,
+                    liability_class.total_amount,
+                )
             )
 
         if self.data.get("credit_card", None):
@@ -198,13 +204,13 @@ class StatementWriter:
         summary_entries = self.data.get("summary_entries", None)
         if not summary_entries:
             return
-        Summary.insert_many(summary_entries)
+        Summary.insert_many(self.db_engine, summary_entries)
         for bank_account in self.data["asset_parsers"][0].parsed_data:
             if not bank_account.is_asset():
                 continue
-            bank_account.insert()
+            bank_account.insert(self.db_engine)
         for stock in self.data["asset_parsers"][1].parsed_data:
-            stock.insert()
+            stock.insert(self.db_engine)
 
     @staticmethod
     def register_styles(workbook):
