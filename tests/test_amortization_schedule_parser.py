@@ -1,12 +1,12 @@
 """Tests for the AmortizationScheduleParser class."""
-
+from datetime import datetime
 from bs4 import BeautifulSoup
 from parsers.amortization_schedule_parser import AmortizationScheduleParser
 
 
-def test_parse():
+def test_parse(writable_path):
     """Unit test for parse()"""
-    parser = AmortizationScheduleParser("dummy", None, None)
+    parser = AmortizationScheduleParser("dummy", writable_path, datetime.today())
     html = """<tbody id="amort_sched"><tr><td colspan="6"></td></tr>
     <tr>
         <td>1</td>

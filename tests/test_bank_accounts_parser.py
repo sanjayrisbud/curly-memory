@@ -1,11 +1,11 @@
 """Tests for the BankAccountsParser class."""
-
+from datetime import datetime
 from parsers.bank_accounts_parser import BankAccountsParser
 
 
-def test_parse():
+def test_parse(writable_path):
     """Unit test for parse()"""
-    parser = BankAccountsParser("dummy", None, None)
+    parser = BankAccountsParser("dummy", writable_path, datetime.today())
     temp = [
         "1/8/22, 3:25 PM BPI Online",
         "M G \uf0e0",

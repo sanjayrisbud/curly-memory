@@ -1,12 +1,12 @@
 """Tests for the PortfolioParser class."""
-
+from datetime import datetime
 from bs4 import BeautifulSoup
 from parsers.portfolio_parser import PortfolioParser
 
 
-def test_parse():
+def test_parse(writable_path):
     """Unit test for parse()"""
-    parser = PortfolioParser("dummy", None, None)
+    parser = PortfolioParser("dummy", writable_path, datetime.today())
     html = """<ul id="SpDataItemList"><li>
 		<div><a>BUY</a>&nbsp;|<a>SELL</a></div>
 		<div>					AC							</div>

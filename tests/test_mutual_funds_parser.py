@@ -1,12 +1,13 @@
 """Tests for the MutualFundsParser class."""
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 from parsers.mutual_funds_parser import MutualFundsParser
 
 
-def test_parse():
+def test_parse(writable_path):
     """Unit test for parse()"""
-    parser = MutualFundsParser("dummy", None, None)
+    parser = MutualFundsParser("dummy", writable_path, datetime.today())
     temp = """
                                 <tr ng-repeat="fund in mutualFunds track by $index">
 									<td><span class="ng-binding">00406538CF01</span></td>

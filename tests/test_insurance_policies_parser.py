@@ -1,11 +1,12 @@
 """Tests for the InsurancePoliciesParser class."""
+from datetime import datetime
 from bs4 import BeautifulSoup
 from parsers.insurance_policies_parser import InsurancePoliciesParser
 
 
-def test_parse():
+def test_parse(writable_path):
     """Unit test for parse()"""
-    parser = InsurancePoliciesParser("dummy", None, None)
+    parser = InsurancePoliciesParser("dummy", writable_path, datetime.today())
     temp = """
 								<tr ng-repeat="policy in lifePolicies track by $index">
 									<td><span class="ng-binding">0800261739</span> 
