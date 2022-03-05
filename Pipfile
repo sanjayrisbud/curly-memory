@@ -9,6 +9,7 @@ pdfplumber = "*"
 sqlalchemy = "*"
 openpyxl = "*"
 alembic = "*"
+matplotlib = "*"
 
 [dev-packages]
 pylint = "*"
