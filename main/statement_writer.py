@@ -4,21 +4,20 @@ from openpyxl.styles import NamedStyle, PatternFill, Border, Side, Alignment, Fo
 from openpyxl.styles.borders import BORDER_NONE, BORDER_THIN
 from openpyxl.utils import get_column_letter
 from models.summary import Summary
-from main.file_processor import FileProcessor
 
 
-class StatementWriter(FileProcessor):
+class StatementWriter:
     """Class used to write out the financial statement."""
 
-    def __init__(self, filename, path, date):
-        super().__init__(filename, path, date)
+    def __init__(self, statement):
+        self.statement = statement
         self.data = None
         self.row = 1
 
     def run(self, data):
         """Perform class logic."""
         self.data = data
-        template = load_workbook(self.file_object.parent / "template.xlsx")
+        template = load_workbook(self.statement.file_object.parent / "template.xlsx")
         self.register_styles(template)
         assets = template.create_sheet("Assets")
         liabilities = template.create_sheet("Liabilities")
@@ -29,14 +28,13 @@ class StatementWriter(FileProcessor):
         self.create_liabilities_sheet(liabilities)
 
         self.store_in_database()
-        template.save(self.file_object)
-        return self.archive()
+        template.save(self.statement.file_object)
 
     def populate_summary_sheet(self, sheet):
         """Populate summary sheet with the mined data."""
         sheet["A2"] = "Sanjay Risbud"
-        sheet["A3"] = self.date.strftime("%B %Y")
-        sheet["B26"] = self.date.strftime("%m/%d/%Y")
+        sheet["A3"] = self.statement.date.strftime("%B %Y")
+        sheet["B26"] = self.statement.date.strftime("%m/%d/%Y")
 
         relevant_cells = {
             "BankAccounts": "B6",
@@ -52,21 +50,21 @@ class StatementWriter(FileProcessor):
             type_ = asset_class.__class__.__name__.replace("Parser", "")
             sheet[relevant_cells[type_]] = asset_class.total_amount
             summary_entries.append(
-                Summary(self.date, "ASSET", type_, asset_class.total_amount)
+                Summary(self.statement.date, "ASSET", type_, asset_class.total_amount)
             )
 
         for liability_class in self.data.get("liability_parsers", []):
             type_ = liability_class.__class__.__name__.replace("Parser", "")
             sheet[relevant_cells[type_]] = liability_class.total_amount
             summary_entries.append(
-                Summary(self.date, "LIABILITY", type_, liability_class.total_amount)
+                Summary(self.statement.date, "LIABILITY", type_, liability_class.total_amount)
             )
 
         if self.data.get("credit_card", None):
             total_amount = self.data["credit_card"].balance
             sheet["B16"] = total_amount
             summary_entries.append(
-                Summary(self.date, "LIABILITY", "CreditCard", total_amount)
+                Summary(self.statement.date, "LIABILITY", "CreditCard", total_amount)
             )
 
         self.data["summary_entries"] = summary_entries

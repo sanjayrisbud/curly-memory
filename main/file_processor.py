@@ -5,13 +5,13 @@ from pathlib import Path
 
 
 class FileProcessor:
-    """Parent class of classes that manipulate files."""
+    """Class to manipulate files."""
 
-    def __init__(self, filename, path, date):
-        folder = path or "C:/Users/sanjay s risbud/Dropbox/statements"
-        self.path = Path(folder)
+    def __init__(self, filename, path, date, archive_path=None):
+        self.path = Path(path)
         self.file_object = self.path / filename
         self.date = date or datetime.today()
+        self.archive_path = Path(archive_path) if archive_path else self.path / "archive"
 
     def file_exists(self):
         """Return True if file exists, False otherwise."""
@@ -22,6 +22,6 @@ class FileProcessor:
         old_name = str(self.path / self.file_object.stem)
         suffix = self.file_object.suffix
         new_name = str(
-            self.path / "archive" / self.file_object.stem
+            self.archive_path / self.file_object.stem
         ) + self.date.strftime("_%Y-%m-%d")
         return shutil.copy(old_name + suffix, new_name + suffix)
