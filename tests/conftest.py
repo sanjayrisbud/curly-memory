@@ -2,14 +2,16 @@
 import pytest
 import models
 
+WRITABLE_PATH = r"C:\Users\sanjay s risbud\Dropbox\statements\tests"
+
 
 @pytest.fixture()
 def writable_path():
     """Return a dummy writable path."""
-    return r"C:\Users\sanjay s risbud\Dropbox\statements\tests"
+    return WRITABLE_PATH
 
 
 @pytest.fixture()
-def engine(writable_path):
+def engine():
     """Return a dummy database engine."""
-    return models.get_engine(writable_path + "/db.sqlite3", create_db=True)
+    return models.get_engine(WRITABLE_PATH + "/db.sqlite3")

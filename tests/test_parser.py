@@ -1,6 +1,6 @@
 """Tests for the Parser class."""
-import pytest
 from datetime import datetime
+import pytest
 from parsers.parser import Parser
 
 

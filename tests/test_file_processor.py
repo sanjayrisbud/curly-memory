@@ -10,7 +10,7 @@ def test_init(writable_path):
     """Unit test for initializer."""
     file_processor = FileProcessor("dummy_file", writable_path, None)
     assert isinstance(file_processor.file_object, Path)
-    assert file_processor.date == datetime.today()
+    assert file_processor.date.replace(microsecond=0) == datetime.today().replace(microsecond=0)
 
     dummy_path = "/dummy"
     dummy_date = datetime(2022, 1, 1)

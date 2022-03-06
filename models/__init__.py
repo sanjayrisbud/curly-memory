@@ -1,4 +1,7 @@
 """Initialize the database and define models' base classes."""
+
+# pylint: disable=import-outside-toplevel, unused-import, cyclic-import
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
@@ -39,15 +42,7 @@ class ModelsParent:
         return result
 
 
-def get_engine(full_path, create_db):
-    """Create database engine (and tables if necessary)"""
+def get_engine(full_path):
+    """Create database engine."""
     engine = create_engine("sqlite:///" + full_path, echo=True)
-
-    if create_db:
-        from models.summary import Summary
-        from models.stock_position import StockPosition
-        from models.bank_account import BankAccount
-
-        Base.metadata.create_all(engine)
-
     return engine

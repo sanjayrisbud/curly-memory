@@ -23,6 +23,6 @@ def test_parse(writable_path):
 									</td>
 								</tr>
     """
-    parser.extractor.raw_data = BeautifulSoup(temp)
+    parser.extractor.raw_data = BeautifulSoup(temp, "html.parser")
     parser.parse()
     assert parser.parsed_data[0].mkt_value == 10
