@@ -27,7 +27,7 @@ class BankAccountsParser(Parser):
             self.create_entry("BPI", lines[26], lines[27], lines[28])
 
         # MANUAL ENTRY FOR CIMB ACCT
-        self.create_entry("CIMB Bank", "GSave", "20860739494592", "495,122")
+        self.create_entry("CIMB Bank", "GSave", "20860739494592", "496,678")
 
     def create_entry(self, bank, account_alias, account_number, balance):
         """Add to list of bank accounts and to total_amount (if necessary)."""
