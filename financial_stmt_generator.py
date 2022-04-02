@@ -11,6 +11,7 @@ from parsers.insurance_policies_parser import InsurancePoliciesParser
 from parsers.real_estate_parser import RealEstateParser
 from main.file_processor import FileProcessor
 from main.statement_writer import StatementWriter
+from main.reports_creator import ReportsCreator
 
 
 class FinancialStatementGenerator:
@@ -52,6 +53,7 @@ class FinancialStatementGenerator:
         """Run the application logic."""
         self.mine_data()
         self.write_statement()
+        self.statement.archive()
         self.db_file.archive()
 
     def mine_data(self):
