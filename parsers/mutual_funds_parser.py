@@ -21,9 +21,9 @@ class MutualFundsParser(Parser):
         for fund in fund_rows:
             tds = fund.find_all("td")
             fund_name = tds[1].text.strip()
-            fund_shares = int(tds[2].text.replace(",", "").replace(".00", "").strip())
+            fund_shares = 0
             market_value = float(
-                tds[4]
+                tds[2]
                 .text.replace(",", "")
                 .replace("PHP", "")
                 .replace("USD", "")
