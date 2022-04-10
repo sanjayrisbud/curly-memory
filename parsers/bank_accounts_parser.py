@@ -23,8 +23,8 @@ class BankAccountsParser(Parser):
             )
 
         # get the credit card
-        if len(lines) > 20:
-            self.create_entry("BPI", lines[26], lines[27], lines[28])
+        if len(lines) > 30:
+            self.create_entry("BPI", lines[30], lines[31], lines[32])
 
         # MANUAL ENTRY FOR CIMB ACCT
         self.create_entry("CIMB Bank", "GSave", "20860739494592", "496,678")
