@@ -10,21 +10,30 @@ class BankAccountsParser(Parser):
     def __init__(self, filename, path, date):
         super().__init__(path, date)
         self.extractor = PDFExtractor(filename, self.path, self.date)
+        self.lines = None
 
     def parse(self):
         """Parse the account information."""
-        lines = self.extractor.raw_data[0].split("\n")
+        self.lines = self.extractor.raw_data[0].split("\n")
 
         # determine the number of deposit accounts
-        deposits = int(lines[2].split("(")[1][0])
+        offset = self.return_line_that_starts_with("Deposit")
+        deposits = int(self.lines[offset].split("(")[1][0])
         for i in range(1, deposits + 1):
             self.create_entry(
-                "BPI", lines[4 * i + 0], lines[4 * i + 1], lines[4 * i + 2]
+                "BPI",
+                self.lines[4 * i + offset - 2],
+                self.lines[4 * i + offset - 1],
+                self.lines[4 * i + offset]
             )
 
         # get the credit card
-        if len(lines) > 30:
-            self.create_entry("BPI", lines[30], lines[31], lines[32])
+        offset = self.return_line_that_starts_with("Credit Card")
+        if offset > -1:
+            self.create_entry("BPI",
+                              self.lines[offset + 2],
+                              self.lines[offset + 3],
+                              self.lines[offset + 4])
 
         # MANUAL ENTRY FOR CIMB ACCT
         self.create_entry("CIMB Bank", "GSave", "20860739494592", "500,000")
@@ -38,3 +47,10 @@ class BankAccountsParser(Parser):
         self.parsed_data.append(record)
         if record.is_asset():
             self.total_amount += record.balance
+
+    def return_line_that_starts_with(self, prefix):
+        """Return the index of the first line that starts with the given prefix."""
+        for i, line in enumerate(self.lines):
+            if line.startswith(prefix):
+                return i
+        return -1
