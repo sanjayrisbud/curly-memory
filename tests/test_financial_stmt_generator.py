@@ -14,10 +14,3 @@ def test_mine_data():
     generator = FinancialStatementGenerator("dev")
     generator.mine_data()
     assert "credit card" not in vars(generator)
-
-
-def test_write_statement():
-    """unit test for write_statement()."""
-    generator = FinancialStatementGenerator("dev")
-    generator.write_statement()
-    assert vars(generator)["credit_card"] is None
