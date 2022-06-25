@@ -31,9 +31,9 @@ class InsurancePoliciesParser(Parser):
             policy_name = tds[1].text.strip()
             face_amount = face_amounts[policy_number]
 
-            # since life insurance policies are currently mortgaged to PSBank
+            # since life insurance policy is currently mortgaged to PSBank
             # exclude them from list
-            if policy_number.startswith("03"):
+            if policy_number == "031300038":
                 continue
 
             record = BankAccount(
