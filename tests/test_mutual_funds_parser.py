@@ -14,8 +14,9 @@ def test_parse(writable_path):
                                         <a ui-sref="dashboard.accounts.mf({accountNumber: fund.accountNumber, fundCode: fund.fundCode})" class="ng-binding" href="#/dashboard/accounts/mutual-fund/00406538CF01/CF0002">00406538CF01</a> 
                                     </td>
                                     <td class="ng-binding">BALANCED FUND</td>
-                                    <td class="ng-binding">PHP 10.00</td>
+                                    <td class="ng-binding">18</td>
                                     <td class="ng-binding">Individual</td>
+                                    <td class="ng-binding">PHP 10.00</td>
                                 </tr>    """
     parser.extractor.raw_data = BeautifulSoup(temp, "html.parser")
     parser.parse()
