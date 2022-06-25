@@ -23,7 +23,7 @@ class MutualFundsParser(Parser):
             fund_name = tds[1].text.strip()
             fund_shares = 0
             market_value = float(
-                tds[2]
+                tds[4]
                 .text.replace(",", "")
                 .replace("PHP", "")
                 .replace("USD", "")
