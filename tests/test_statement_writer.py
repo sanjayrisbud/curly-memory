@@ -12,8 +12,8 @@ def test_run(writable_path):
     writer = StatementWriter(
         FileProcessor("dummy.xlsx", writable_path, datetime(2000, 1, 1)))
     writer.run(([], {}, {}))
-    assert writer._statement.file_object.exists()
-    writer._statement.file_object.unlink()
+    assert writer.statement.file_object.exists()
+    writer.statement.file_object.unlink()
 
 
 def test_populate_summary_sheet(writable_path):
@@ -23,7 +23,7 @@ def test_populate_summary_sheet(writable_path):
     )
     workbook = Workbook()
     worksheet = workbook.create_sheet()
-    stmt._financial_data = [], {}, {}
+    stmt.financial_data = [], {}, {}
     stmt.populate_summary_sheet(worksheet)
     assert worksheet["A3"].value == "January 2000"
     workbook.close()

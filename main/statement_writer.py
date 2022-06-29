@@ -13,6 +13,21 @@ class StatementWriter:
         self._financial_data = None
         self._row = 1
 
+    @property
+    def statement(self):
+        """Return the financial statement."""
+        return self._statement
+
+    @property
+    def financial_data(self):
+        """Return the financial data."""
+        return self._financial_data
+
+    @financial_data.setter
+    def financial_data(self, financial_data):
+        """Set the financial data."""
+        self._financial_data = financial_data
+
     def run(self, data):
         """Perform class logic."""
         self._financial_data = data
