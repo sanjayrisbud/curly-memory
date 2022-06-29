@@ -50,9 +50,9 @@ class FinancialStatementGenerator:
             AmortizationScheduleParser("loan.html", path, date),
         ]
 
-        self.statement_writer = StatementWriter(self.statement)
-        self.reports_creator = ReportsCreator(self.statement)
         self.db_interface = DatabaseInterface(db_file, db_engine)
+        self.statement_writer = StatementWriter(self.statement)
+        self.reports_creator = ReportsCreator(self.statement, self.db_interface)
 
     def run(self, environment):
         """Run the application logic."""
