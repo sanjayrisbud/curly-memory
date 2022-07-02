@@ -61,6 +61,7 @@ class FinancialStatementGenerator:
             self.statement_writer.run(data)
         else:
             self.reports_creator.run(data)
+        self.db_interface.store_various_financial_data(data)
         self.statement.archive()
         self.db_interface.archive_db_file()
 
