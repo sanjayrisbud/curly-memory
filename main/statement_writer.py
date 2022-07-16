@@ -91,7 +91,9 @@ class StatementWriter:
             [record.account_number, record.account_alias, record.bank, record.balance]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_mutual_funds_and_bonds_info(self, sheet, content):
         """Write out the information about mutual funds and bonds."""
@@ -101,7 +103,9 @@ class StatementWriter:
             [record.stock, "Sunlife", record.mkt_value]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_portfolio_info(self, sheet, content):
         """Write out the information about stock portfolio."""
@@ -111,7 +115,9 @@ class StatementWriter:
             [record.stock, record.shares, record.mkt_value]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_life_insurance_info(self, sheet, content):
         """Write out the information about life insurance policies."""
@@ -121,7 +127,9 @@ class StatementWriter:
             [record.account_alias, record.bank, record.account_number, record.balance]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_real_estate_info(self, sheet, content):
         """Write out the information about real estate."""
@@ -136,7 +144,9 @@ class StatementWriter:
             [record.address, record.price, record.year_bought, record.market_value]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_current_loan_balance(self, sheet, content):
         """Write out the information about current loan balance."""
@@ -151,16 +161,21 @@ class StatementWriter:
             ["Philippine Savings Bank", 1_960_000, record.amount, record.balance]
             for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def write_credit_card_info(self, sheet, content):
         """Write out the information about the credit card."""
         title = "Credit card & charge card debt"
         header = ["Account Number", "Bank", "Balance"]
-        entries = [[record.account_number, record.bank, record.balance]
-                   for record in content.get("records", [])
+        entries = [
+            [record.account_number, record.bank, record.balance]
+            for record in content.get("records", [])
         ]
-        self.create_section(sheet, title, header, entries, content.get("total_amount", ""))
+        self.create_section(
+            sheet, title, header, entries, content.get("total_amount", "")
+        )
 
     def create_section(self, sheet, *args):
         """Create a section of the sheet."""

@@ -6,6 +6,7 @@ from openpyxl.drawing import image
 
 class Chart(metaclass=ABCMeta):
     """Parent class of all charts."""
+
     def __init__(self, data):
         self._data = data
 

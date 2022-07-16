@@ -10,7 +10,8 @@ from main.statement_writer import StatementWriter
 def test_run(writable_path):
     """Unit test for run()."""
     writer = StatementWriter(
-        FileProcessor("dummy.xlsx", writable_path, datetime(2000, 1, 1)))
+        FileProcessor("dummy.xlsx", writable_path, datetime(2000, 1, 1))
+    )
     writer.run(([], {}, {}))
     assert writer.statement.file_object.exists()
     writer.statement.file_object.unlink()

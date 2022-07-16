@@ -82,16 +82,18 @@ class FinancialStatementGenerator:
         for parser in self.asset_parsers:
             assets[parser.__class__.__name__.replace("Parser", "")] = {
                 "records": parser.parsed_data,
-                "total_amount": parser.total_amount
+                "total_amount": parser.total_amount,
             }
         liabilities = {}
         for parser in self.liability_parsers:
             liabilities[parser.__class__.__name__.replace("Parser", "")] = {
                 "records": parser.parsed_data,
-                "total_amount": parser.total_amount
+                "total_amount": parser.total_amount,
             }
         self.move_credit_cards_to_liabilities(assets, liabilities)
-        summary = self.generate_summary_entries(assets, liabilities, self.statement.date)
+        summary = self.generate_summary_entries(
+            assets, liabilities, self.statement.date
+        )
         return summary, assets, liabilities
 
     @staticmethod
@@ -103,14 +105,22 @@ class FinancialStatementGenerator:
         for account in assets.get("BankAccounts", {}).get("records", {}):
             if not account.is_asset():
                 total_amount += account.balance
-                card = BankAccount(account.date, account.bank, account.account_alias,
-                                   account.account_number, account.balance)
+                card = BankAccount(
+                    account.date,
+                    account.bank,
+                    account.account_alias,
+                    account.account_number,
+                    account.balance,
+                )
                 to_delete.append(account)
                 credit_cards.append(card)
 
         for account in to_delete:
             assets["BankAccounts"]["records"].remove(account)
-        liabilities["CreditCard"] = {"records": credit_cards, "total_amount": total_amount}
+        liabilities["CreditCard"] = {
+            "records": credit_cards,
+            "total_amount": total_amount,
+        }
 
     @staticmethod
     def generate_summary_entries(assets, liabilities, date):

@@ -24,16 +24,18 @@ class BankAccountsParser(Parser):
                 "BPI",
                 self.lines[4 * i + offset - 2],
                 self.lines[4 * i + offset - 1],
-                self.lines[4 * i + offset]
+                self.lines[4 * i + offset],
             )
 
         # get the credit card
         offset = self.return_line_that_starts_with("Credit Card")
         if offset > -1:
-            self.create_entry("BPI",
-                              self.lines[offset + 2],
-                              self.lines[offset + 3],
-                              self.lines[offset + 4])
+            self.create_entry(
+                "BPI",
+                self.lines[offset + 2],
+                self.lines[offset + 3],
+                self.lines[offset + 4],
+            )
 
         # MANUAL ENTRY FOR CIMB ACCT
         self.create_entry("CIMB Bank", "GSave", "20860739494592", "500,000")
