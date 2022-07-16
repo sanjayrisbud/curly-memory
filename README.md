@@ -11,7 +11,7 @@ with respect to share count and total cost.
 
 Execute the unit tests with:
 
-`pytest --cov . tests/ --cov-report html:tests/cov_html -v > tests/results.txt`
+`pytest --cov . tests/ --cov-report html:tests/results/cov_html -v > tests/results/results.txt`
 
-Test results will be in `tests/results.txt`.
-Coverage report will be in `tests/cov_html/index.html`.
+Test results will be in `tests/results/results.txt`.
+Coverage report will be in `tests/results/cov_html/index.html`.

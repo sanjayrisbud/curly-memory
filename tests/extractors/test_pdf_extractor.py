@@ -6,7 +6,7 @@ from extractors.pdf_extractor import PDFExtractor
 
 def test_extract():
     """Unit test for extract()."""
-    path = Path(__file__).parent / "files"
+    path = Path(__file__).parent.parent / "files"
     pdf = PDFExtractor("dummy.pdf", path)
     assert pdf.file_exists()
     assert pdf.file_type == "pdf"

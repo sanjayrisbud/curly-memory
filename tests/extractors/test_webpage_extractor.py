@@ -7,7 +7,7 @@ from extractors.webpage_extractor import WebpageExtractor
 
 def test_extract():
     """Unit test for extract()."""
-    path = Path(__file__).parent / "files"
+    path = Path(__file__).parent.parent / "files"
     webpage = WebpageExtractor("dummy.html", path)
     assert webpage.file_exists()
     assert webpage.file_type == "html"
