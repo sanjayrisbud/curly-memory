@@ -30,18 +30,18 @@ class StatementWriter:
 
     def run(self, data):
         """Perform class logic."""
-        self._financial_data = data
-        template = load_workbook(self._statement.file_object.parent / "template.xlsx")
-        self.register_styles(template)
-        assets = template.create_sheet("Assets")
-        liabilities = template.create_sheet("Liabilities")
+        self.financial_data = data
+        workbook = load_workbook(self._statement.file_object.parent / "template.xlsx")
+        self.register_styles(workbook)
+        assets = workbook.create_sheet("Assets")
+        liabilities = workbook.create_sheet("Liabilities")
 
-        self.populate_summary_sheet(template["Summary"])
+        self.populate_summary_sheet(workbook["Summary"])
         self.create_assets_sheet(assets)
         self._row = 1
         self.create_liabilities_sheet(liabilities)
 
-        template.save(self._statement.file_object)
+        workbook.save(self._statement.file_object)
 
     def populate_summary_sheet(self, sheet):
         """Populate summary sheet with the mined _financial_data."""
