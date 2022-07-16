@@ -1,5 +1,6 @@
 """Defines the ReportsCreator class."""
 from openpyxl import load_workbook
+from charts.summary_chart import SummaryChart
 
 
 class ReportsCreator:
@@ -9,6 +10,9 @@ class ReportsCreator:
         self._statement = statement
         self._financial_data = None
         self._db_interface = db_interface
+        self._charts_to_create = [
+            ("SALN Chart", SummaryChart)
+        ]
 
     @property
     def statement(self):
@@ -35,7 +39,12 @@ class ReportsCreator:
 
     def run(self, data):
         """Perform class logic."""
-        self._financial_data = data
+        self.financial_data = data
         file_object = self._statement.file_object
         workbook = load_workbook(file_object)
+        for chart in self._charts_to_create:
+            sheet = workbook.create_sheet(title=chart[0])
+            image = chart[1](data).get_image()
+            image.anchor = "A1"
+            sheet.add_image(image)
         workbook.save(file_object)
