@@ -10,8 +10,6 @@ from main.reports_creator import ReportsCreator
 def test_run(writable_path):
     """Unit test for run()."""
     statement = FileProcessor("dummy.xlsx", writable_path, datetime(2000, 1, 1))
-    if not statement.file_exists():
-        return
     creator = ReportsCreator(statement)
     creator.run(([], {}, {}))
     assert creator.statement.file_object.exists()
