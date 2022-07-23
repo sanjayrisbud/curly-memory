@@ -1,10 +1,10 @@
 """Defines Summary class."""
-from sqlalchemy import Column, Float, String
+from sqlalchemy import Column, Float, String, func
 from models import Base, ModelsParent
 
 
 class Summary(Base, ModelsParent):
-    """Model for stock/mutual fund position."""
+    """Model for summary data."""
 
     __tablename__ = "summaries"
     entry_type = Column(String(50))
@@ -19,3 +19,21 @@ class Summary(Base, ModelsParent):
 
     def __str__(self):
         return self.title + "-->" + str(self.value)
+
+    @classmethod
+    def get_asset_and_liability_values(cls, engine):
+        """Return asset and liability values, sorted by ascending date."""
+        with cls.get_session(engine) as session:
+            assets = cls.query_by_entry_type(session, "ASSET")
+            liabilities = cls.query_by_entry_type(session, "LIABILITY")
+        return assets, liabilities
+
+    @classmethod
+    def query_by_entry_type(cls, session, entry_type):
+        """Return the result of querying the summary by entry type."""
+        return (
+            session.query(cls.date, cls.entry_type, func.sum(cls.value))
+            .filter(cls.entry_type == entry_type)
+            .group_by(cls.date, cls.entry_type)
+            .order_by(cls.date, cls.entry_type)
+        )

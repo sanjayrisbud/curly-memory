@@ -7,8 +7,9 @@ from openpyxl.drawing import image
 class Chart(metaclass=ABCMeta):
     """Parent class of all charts."""
 
-    def __init__(self, data):
-        self._data = data
+    def __init__(self, data, db_interface):
+        self.data = data
+        self.db_interface = db_interface
 
     @abstractmethod
     def draw_chart(self):
