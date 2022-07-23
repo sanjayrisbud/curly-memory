@@ -57,9 +57,11 @@ class FinancialStatementGenerator:
     def run(self, environment):
         """Run the application logic."""
         data = self.mine_data()
-        self.statement_writer.run(data)
-        if environment == "dev":
+        if environment != "dev":
+            self.statement_writer.run(data)
+        else:
             self.reports_creator.run(data)
+            return
         self.db_interface.store_various_financial_data(data)
         self.statement.archive()
         self.db_interface.archive_db_file()
