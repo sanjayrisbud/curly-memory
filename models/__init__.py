@@ -19,16 +19,16 @@ class ModelsParent:
 
     def insert(self, engine):
         """Add a single object to the database."""
-        with Session(engine) as session:
+        with self.get_session(engine) as session:
             session.add(self)
             session.commit()
             object_id = self.id
         return object_id
 
-    @staticmethod
-    def insert_many(engine, records):
+    @classmethod
+    def insert_many(cls, engine, records):
         """Add multiple objects to the database."""
-        with Session(engine) as session:
+        with cls.get_session(engine) as session:
             session.add_all(records)
             session.commit()
             object_ids = [record.id for record in records]
@@ -37,9 +37,14 @@ class ModelsParent:
     @classmethod
     def find_by_date(cls, engine, date):
         """Find records written on a certain date."""
-        with Session(engine) as session:
+        with cls.get_session(engine) as session:
             result = session.query(cls).filter(cls.date == date)
         return result
+
+    @staticmethod
+    def get_session(engine):
+        """Return a database session object."""
+        return Session(engine)
 
 
 def get_engine(full_path):
