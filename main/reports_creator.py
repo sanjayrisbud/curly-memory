@@ -47,7 +47,7 @@ class ReportsCreator:
             workbook = load_workbook(file_object)
         for chart in self._charts_to_create:
             sheet = workbook.create_sheet(title=chart[0])
-            image = chart[1](data).get_image()
+            image = chart[1](self.financial_data, self._db_interface).get_image()
             image.anchor = "A1"
             sheet.add_image(image)
         workbook.save(file_object)
