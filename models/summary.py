@@ -37,3 +37,10 @@ class Summary(Base, ModelsParent):
             .group_by(cls.date, cls.entry_type)
             .order_by(cls.date, cls.entry_type)
         )
+
+    @classmethod
+    def get_date_right_before(cls, engine, date):
+        """Get fetch date immediately before the given date."""
+        with cls.get_session(engine) as session:
+            previous = session.query(func.max(cls.date)).filter(cls.date < date)
+        return previous
