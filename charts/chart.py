@@ -19,6 +19,6 @@ class Chart(metaclass=ABCMeta):
         """Return the image representation of the chart."""
         img = io.BytesIO()
         fig = self.draw_chart()
-        fig.savefig(img, format="png")
+        fig.savefig(img, format="png", bbox_inches="tight")
         img.seek(0)
         return image.Image(img)
