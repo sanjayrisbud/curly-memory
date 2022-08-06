@@ -1,5 +1,7 @@
 """Defines the DatabaseInterface class."""
 from models import summary
+from models import bank_account
+from models import stock_position
 
 
 class DatabaseInterface:
@@ -18,15 +20,49 @@ class DatabaseInterface:
         previous = summary.Summary.get_date_right_before(
             self._db_engine, date=self._db_file.date
         )[0][0]
-        records = list(summary.Summary.find_by_date(self._db_engine, date=previous))
-        return records, {}, {}
+
+        summary_records, _ = self._get_table_prev_data(summary.Summary, date=previous)
+        accounts, accounts_total = self._get_table_prev_data(
+            bank_account.BankAccount, date=previous
+        )
+        portfolio, portfolio_total = self._get_table_prev_data(
+            stock_position.StockPosition, date=previous
+        )
+        amortization_schedule = summary_records[5]
+        credit_card = summary_records[6]
+
+        return (
+            summary_records,
+            {
+                "BankAccounts": self._form_dict(accounts, accounts_total),
+                "Portfolio": self._form_dict(portfolio, portfolio_total),
+            },
+            {
+                "AmortizationSchedule": self._form_dict(
+                    [amortization_schedule],
+                    amortization_schedule.value,
+                ),
+                "CreditCard": self._form_dict([credit_card], credit_card.value),
+            },
+        )
+
+    def _get_table_prev_data(self, model, date):
+        """Get the previous data from the database table; sum the records if needed."""
+        list_to_return = list(model.find_by_date(self._db_engine, date))
+        if model == summary.Summary:
+            total = 0
+        elif model == bank_account.BankAccount:
+            total = sum([account.balance for account in list_to_return])
+        else:
+            total = sum([stock.mkt_value for stock in list_to_return])
+        return list_to_return, total
 
     def store_various_financial_data(self, financial_data):
         """Store various financial data points in the database for later use."""
         for summ in financial_data[0]:
             summ.insert(self._db_engine)
-        for bank_account in financial_data[1]["BankAccounts"]["records"]:
-            bank_account.insert(self._db_engine)
+        for account in financial_data[1]["BankAccounts"]["records"]:
+            account.insert(self._db_engine)
         for stock in financial_data[1]["Portfolio"]["records"]:
             stock.insert(self._db_engine)
 
@@ -37,3 +73,8 @@ class DatabaseInterface:
         asset_points = [row[2] for row in result[0]]
         liability_points = [row[2] for row in result[1]]
         return date_points, asset_points, liability_points
+
+    @staticmethod
+    def _form_dict(records, total_amount):
+        """Return the parameters as a dict."""
+        return {"records": records, "total_amount": total_amount}
