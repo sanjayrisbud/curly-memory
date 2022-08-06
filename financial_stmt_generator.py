@@ -60,6 +60,7 @@ class FinancialStatementGenerator:
         if environment != "dev":
             self.statement_writer.run(data)
         else:
+            data = None
             self.reports_creator.run(data)
             return
         self.db_interface.store_various_financial_data(data)
