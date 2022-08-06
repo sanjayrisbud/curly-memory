@@ -15,6 +15,10 @@ class Chart(metaclass=ABCMeta):
     def draw_chart(self):
         """Draw a chart to represent the data."""
 
+    @abstractmethod
+    def derive_datapoints(self):
+        """Get the data points to use for the chart."""
+
     def get_image(self):
         """Return the image representation of the chart."""
         img = io.BytesIO()

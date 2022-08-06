@@ -9,7 +9,7 @@ class SummaryChart(Chart):
 
     def draw_chart(self):
         """Draw a chart to represent the data."""
-        assets, liabilities, net_worth, xpoints = self._derive_datapoints()
+        assets, liabilities, net_worth, xpoints = self.derive_datapoints()
 
         figure, axis = plt.subplots()
         figure.autofmt_xdate(rotation=45)
@@ -26,7 +26,7 @@ class SummaryChart(Chart):
         axis.legend()
         return figure
 
-    def _derive_datapoints(self):
+    def derive_datapoints(self):
         """Get the data points to plot in the chart."""
         xpoints, assets, liabilities = self.db_interface.get_time_series_summary()
         xpoints = [xpoint.strftime("%m/%d/%Y") for xpoint in xpoints]
