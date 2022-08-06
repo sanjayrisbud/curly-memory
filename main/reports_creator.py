@@ -1,5 +1,7 @@
 """Defines the ReportsCreator class."""
 from openpyxl import load_workbook
+
+from charts.cash_vs_loan import CashVsLoanChart
 from charts.summary_chart import SummaryChart
 
 
@@ -10,7 +12,10 @@ class ReportsCreator:
         self._statement = statement
         self._financial_data = None
         self._db_interface = db_interface
-        self._charts_to_create = [("SALN Chart", SummaryChart)]
+        self._charts_to_create = [
+            ("SALN Chart", SummaryChart),
+            ("Cash vs Loan Amount", CashVsLoanChart),
+        ]
 
     @property
     def statement(self):
@@ -53,8 +58,8 @@ class ReportsCreator:
         for chart in self._charts_to_create:
             if chart[0] in workbook.get_sheet_names():
                 sheet = workbook.get_sheet_by_name(chart[0])
-            else:
-                sheet = workbook.create_sheet(title=chart[0])
+                workbook.remove(sheet)
+            sheet = workbook.create_sheet(title=chart[0])
             image = chart[1](self.financial_data, self._db_interface).get_image()
             image.anchor = "C1"
             sheet.add_image(image)
