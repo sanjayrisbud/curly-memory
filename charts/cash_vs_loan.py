@@ -1,4 +1,4 @@
-"""Defines the CashVsLoan class."""
+"""Defines the CashVsLoanChart class."""
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -29,7 +29,7 @@ class CashVsLoanChart(Chart):
         """Get the data points for the chart."""
         categories = ["Cash", "Loan Amount"]
 
-        cimb = bayad = checks = perm = loan = np.array([0, 0])
+        cimb = bayad = checks = perm = np.array([0, 0])
         accounts = self.data[1]["BankAccounts"]["records"]
         for account in accounts:
             point = np.array([account.balance, 0])
