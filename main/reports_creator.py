@@ -3,6 +3,7 @@ from openpyxl import load_workbook
 
 from charts.cash_vs_loan import CashVsLoanChart
 from charts.summary_chart import SummaryChart
+from charts.portfolio_charts import PortfolioCharts
 
 
 class ReportsCreator:
@@ -15,6 +16,7 @@ class ReportsCreator:
         self._charts_to_create = [
             ("SALN Chart", SummaryChart),
             ("Cash vs Loan Amount", CashVsLoanChart),
+            ("Portfolio Allocation", PortfolioCharts),
         ]
 
     @property
