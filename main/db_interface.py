@@ -28,8 +28,17 @@ class DatabaseInterface:
         portfolio, portfolio_total = self._get_table_prev_data(
             stock_position.StockPosition, date=previous
         )
-        amortization_schedule = summary_records[5]
-        credit_card = summary_records[6]
+
+        amortization_schedule_dict = {"AmortizationSchedule": 0}
+        credit_card_dict = {"CreditCard": 0}
+        if len(summary_records) > 5:
+            amortization_schedule = summary_records[5]
+            credit_card = summary_records[6]
+            amortization_schedule_dict = self._form_dict(
+                [amortization_schedule],
+                amortization_schedule.value,
+            )
+            credit_card_dict = self._form_dict([credit_card], credit_card.value)
 
         return (
             summary_records,
@@ -38,11 +47,8 @@ class DatabaseInterface:
                 "Portfolio": self._form_dict(portfolio, portfolio_total),
             },
             {
-                "AmortizationSchedule": self._form_dict(
-                    [amortization_schedule],
-                    amortization_schedule.value,
-                ),
-                "CreditCard": self._form_dict([credit_card], credit_card.value),
+                "AmortizationSchedule": amortization_schedule_dict,
+                "CreditCard": credit_card_dict,
             },
         )
 
