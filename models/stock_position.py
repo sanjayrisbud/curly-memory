@@ -29,7 +29,7 @@ class StockPosition(Base, ModelsParent):
         return (
             0
             if self.neither_bought_nor_sellable()
-            else self.total_cost - self.mkt_value
+            else self.mkt_value - self.total_cost
         )
 
     def compute_pct_profit_or_loss(self):
@@ -46,9 +46,9 @@ class StockPosition(Base, ModelsParent):
             return "unknown"
 
         value = self.compute_profit_or_loss()
-        if value < 0:
-            return "gain"
         if value > 0:
+            return "gain"
+        if value < 0:
             return "loss"
         return "break even"
 
