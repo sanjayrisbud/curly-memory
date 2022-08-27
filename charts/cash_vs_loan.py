@@ -30,7 +30,7 @@ class CashVsLoanChart(Chart):
         categories = ["Cash", "Loan Amount"]
 
         cimb = bayad = checks = perm = np.array([0, 0])
-        accounts = self.data[1]["BankAccounts"]["records"]
+        accounts = self.data[1].get("BankAccounts", {}).get("records", [])
         for account in accounts:
             point = np.array([account.balance, 0])
             if account.account_alias == "Bayad Utang":
@@ -41,5 +41,7 @@ class CashVsLoanChart(Chart):
                 perm = point
             if account.account_alias == "Checks":
                 checks = point
-        loan = np.array([0, self.data[2]["AmortizationSchedule"]["total_amount"]])
+        loan = np.array(
+            [0, self.data[2].get("AmortizationSchedule", {}).get("total_amount", 0)]
+        )
         return cimb, bayad, checks, perm, loan, categories

@@ -41,7 +41,7 @@ class PortfolioAllocationCharts(Chart):
 
     def derive_datapoints(self):
         """Get the data points for the chart."""
-        stocks = self.data[1]["Portfolio"]["records"]
+        stocks = self.data[1].get("Portfolio", {}).get("records", [])
         symbols = [record.stock for record in stocks]
         shares = [record.shares for record in stocks]
         prices = [record.total_cost for record in stocks]

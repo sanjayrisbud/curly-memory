@@ -33,7 +33,7 @@ class StocksProfitabilityChart(Chart):
 
     def derive_datapoints(self):
         """Get the data points for the chart."""
-        stocks = self.data[1]["Portfolio"]["records"]
+        stocks = self.data[1].get("Portfolio", {}).get("records", [])
         symbols = [record.stock for record in stocks]
         percentages = [record.compute_pct_profit_or_loss() for record in stocks]
         colors = [
