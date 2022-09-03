@@ -58,8 +58,8 @@ class FinancialStatementGenerator:
         """Run the application logic."""
         data = self.mine_data()
         self.statement_writer.run(data)
-        self.reports_creator.run(data)
         self.db_interface.store_various_financial_data(data)
+        self.reports_creator.run(data)
         self.statement.archive()
         self.db_interface.archive_db_file()
 
