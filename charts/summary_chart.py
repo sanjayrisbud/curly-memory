@@ -12,6 +12,7 @@ class SummaryChart(Chart):
         assets, liabilities, net_worth, xpoints = self.derive_datapoints()
 
         figure, axis = plt.subplots()
+        figure.set_size_inches(12, 5.6)
         figure.autofmt_xdate(rotation=45)
 
         axis.plot(xpoints, assets, "b^--", label="Assets")

@@ -12,6 +12,7 @@ class PortfolioPerformanceChart(Chart):
         market_values, total_costs, xpoints = self.derive_datapoints()
 
         figure, axis = plt.subplots()
+        figure.set_size_inches(12, 5.6)
         figure.autofmt_xdate(rotation=45)
 
         axis.plot(xpoints, market_values, "indigo", label="Market Value")
