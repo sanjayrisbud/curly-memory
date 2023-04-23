@@ -1,11 +1,10 @@
 """Defines the ReportsCreator class."""
 from openpyxl import load_workbook
 
-from charts.cash_vs_loan import CashVsLoanChart
-from charts.summary_chart import SummaryChart
 from charts.portfolio_allocation import PortfolioAllocationCharts
 from charts.portfolio_performance import PortfolioPerformanceChart
 from charts.stocks_profitability import StocksProfitabilityChart
+from charts.summary_chart import SummaryChart
 
 
 class ReportsCreator:
@@ -17,7 +16,6 @@ class ReportsCreator:
         self._db_interface = db_interface
         self._charts_to_create = [
             ("SALN Chart", SummaryChart),
-            ("Cash vs Loan Amount", CashVsLoanChart),
             ("Portfolio Allocation", PortfolioAllocationCharts),
             ("Stocks' Profitability", StocksProfitabilityChart),
             ("Portfolio Performance", PortfolioPerformanceChart),
