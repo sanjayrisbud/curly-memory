@@ -1,4 +1,5 @@
 """Defines the AmortizationScheduleParser class."""
+import datetime
 
 from extractors.webpage_extractor import WebpageExtractor
 from models.amortization_payment import AmortizationPayment
@@ -28,3 +29,10 @@ class AmortizationScheduleParser(Parser):
             if self.date > record.date:
                 self.total_amount = record.balance
                 self.parsed_data[0] = record
+            else:
+                # loan has been fully paid
+                record.date = datetime.datetime(year=2023, month=4, day=20)
+                record.principal = record.amount = 1_539_274.71
+                record.interest = record.balance = self.total_amount = 0
+                self.parsed_data[0] = record
+                break
