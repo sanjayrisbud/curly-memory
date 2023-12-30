@@ -1,4 +1,6 @@
 """Defines the DatabaseInterface class."""
+from datetime import datetime
+
 from models import summary
 from models import bank_account
 from models import stock_position
@@ -10,6 +12,7 @@ class DatabaseInterface:
     def __init__(self, db_file, db_engine):
         self._db_file = db_file
         self._db_engine = db_engine
+        self.date_from = datetime(2023, 1, 1)
 
     def archive_db_file(self):
         """Archive the database file."""
@@ -74,7 +77,7 @@ class DatabaseInterface:
 
     def get_time_series_summary(self):
         """Return a summary of asset and liability values as 3 time series."""
-        result = summary.Summary.get_asset_and_liability_values(self._db_engine)
+        result = summary.Summary.get_asset_and_liability_values(self._db_engine, self.date_from)
         date_points = [row[0] for row in result[0]]
         asset_points = [row[2] for row in result[0]]
         liability_points = [row[2] for row in result[1]]
@@ -82,7 +85,8 @@ class DatabaseInterface:
 
     def get_time_series_portfolio(self):
         """Return the portfolio's market price and total cost values as 3 time series."""
-        result = stock_position.StockPosition.get_market_values_and_total_costs(self._db_engine)
+        result = stock_position.StockPosition.get_market_values_and_total_costs(
+            self._db_engine, self.date_from)
         date_points = [row[0] for row in result]
         market_value_points = [row[1] for row in result]
         total_cost_points = [row[2] for row in result]

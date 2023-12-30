@@ -21,19 +21,20 @@ class Summary(Base, ModelsParent):
         return self.title + "-->" + str(self.value)
 
     @classmethod
-    def get_asset_and_liability_values(cls, engine):
+    def get_asset_and_liability_values(cls, engine, date_from):
         """Return asset and liability values, sorted by ascending date."""
         with cls.get_session(engine) as session:
-            assets = cls.query_by_entry_type(session, "ASSET")
-            liabilities = cls.query_by_entry_type(session, "LIABILITY")
+            assets = cls.query_by_entry_type(session, "ASSET", date_from)
+            liabilities = cls.query_by_entry_type(session, "LIABILITY", date_from)
         return assets, liabilities
 
     @classmethod
-    def query_by_entry_type(cls, session, entry_type):
+    def query_by_entry_type(cls, session, entry_type, date_from):
         """Return the result of querying the summary by entry type."""
         return (
             session.query(cls.date, cls.entry_type, func.sum(cls.value))
             .filter(cls.entry_type == entry_type)
+            .filter(cls.date >= date_from)
             .group_by(cls.date, cls.entry_type)
             .order_by(cls.date, cls.entry_type)
         )
