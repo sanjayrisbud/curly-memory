@@ -1,4 +1,6 @@
 """Defines BankAccountsParser class."""
+import re
+
 from extractors.pdf_extractor import PDFExtractor
 from models.bank_account import BankAccount
 from parsers.parser import Parser
@@ -18,23 +20,24 @@ class BankAccountsParser(Parser):
 
         # determine the number of deposit accounts
         offset = self.return_line_that_starts_with("Deposit")
-        deposits = int(self.lines[offset].split("(")[1][0])
-        for i in range(1, deposits + 1):
+        offset += 1
+        deposits = int(self.lines[offset])
+        for i in range(0, deposits):
             self.create_entry(
                 "BPI",
-                self.lines[4 * i + offset - 2],
-                self.lines[4 * i + offset - 1],
-                self.lines[4 * i + offset],
+                account_alias=self.lines[4 * i + offset + 1],
+                account_number=re.search(r"\d+", self.lines[4 * i + offset + 2])[0],
+                balance=re.search(r"[\d,\.]+", self.lines[4 * i + offset + 3])[0],
             )
 
         # get the credit card
-        offset = self.return_line_that_starts_with("Credit Card")
+        offset = self.return_line_that_starts_with("Credit cards")
         if offset > -1:
             self.create_entry(
                 "BPI",
-                self.lines[offset + 2],
-                self.lines[offset + 3],
-                self.lines[offset + 4],
+                account_alias=self.lines[offset + 2],
+                account_number=re.search(r"\d+", self.lines[offset + 4])[0],
+                balance=re.search(r"[\d,\.]+", self.lines[offset + 5])[0],
             )
 
         # MANUAL ENTRY FOR CIMB ACCT
