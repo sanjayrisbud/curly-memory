@@ -37,7 +37,7 @@ class FinancialStatementGenerator:
         db_engine = models.get_engine(path_for_writes + "/db.sqlite3")
 
         self.asset_parsers = [
-            BankAccountsParser("BPI Online.pdf", path, date),
+            BankAccountsParser("BPI - Bank of the Philippine Islands.pdf", path, date),
             PortfolioParser("BPI Trade - Stock Position.html", path, date),
             InsurancePoliciesParser(
                 "Sun Life Financial - Philippines.html", path, date
