@@ -38,7 +38,7 @@ class FinancialStatementGenerator:
 
         self.asset_parsers = [
             BankAccountsParser("BPI - Bank of the Philippine Islands.pdf", path, date),
-            PortfolioParser("BPI Trade - Stock Position.html", path, date),
+            PortfolioParser("portfolio.csv", path, date),
             InsurancePoliciesParser(
                 "Sun Life Financial - Philippines.html", path, date
             ),

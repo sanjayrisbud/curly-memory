@@ -1,6 +1,6 @@
 """Defines the PortfolioParser class."""
 import math
-from extractors.webpage_extractor import WebpageExtractor
+from extractors.csv_extractor import CsvExtractor
 from models.stock_position import StockPosition
 from parsers.parser import Parser
 
@@ -10,20 +10,18 @@ class PortfolioParser(Parser):
 
     def __init__(self, filename, path, date):
         super().__init__(path, date)
-        self.extractor = WebpageExtractor(filename, self.path, self.date)
+        self.extractor = CsvExtractor(filename, self.path, self.date)
 
     def parse(self):
         """Parse the portfolio."""
-        soup = self.extractor.raw_data
-        stocks = soup.find("ul", id="SpDataItemList")
-        for row in stocks.find_all("li"):
-            fields = [
-                div.text.strip().replace("$", "").replace(",", "")
-                for div in row.find_all("div")
-            ]
+        content = self.extractor.raw_data
+        for i, row in enumerate(content):
+            if i == 0:  # header row
+                continue
             record = StockPosition(
-                self.date, fields[1], fields[4], fields[5], fields[6]
+                self.date, row[0], row[2], row[5], row[3]
             )
+            record.total_cost *= record.shares  # since only avg buying price per share is shown
             self.total_amount += record.mkt_value
             self.append(record)
 
