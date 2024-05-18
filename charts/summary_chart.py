@@ -20,7 +20,7 @@ class SummaryChart(Chart):
         axis.plot(xpoints, net_worth, "go-", label="Net Worth")
         axis.set_xlabel("Dates")
         axis.set_ylabel("PHP")
-        axis.set_yticks(list(range(0, 12_000_000, 750_000)))
+        axis.set_yticks(list(range(0, 15_000_000, 1_000_000)))
         axis.yaxis.set_major_formatter("{x:,}")
         axis.set_title("Assets vs Liabilities vs Net Worth")
         axis.grid(True)

@@ -19,7 +19,7 @@ class PortfolioPerformanceChart(Chart):
         axis.plot(xpoints, total_costs, "orange", label="Total Cost")
         axis.set_xlabel("Dates")
         axis.set_ylabel("PHP")
-        axis.set_yticks(list(range(700_000, 2_000_001, 200_000)))
+        axis.set_yticks(list(range(1_000_000, 3_000_001, 200_000)))
         axis.yaxis.set_major_formatter("{x:,}")
         axis.set_title("Market Value vs Total Cost")
         axis.grid(True)
