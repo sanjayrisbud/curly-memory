@@ -38,6 +38,9 @@ class MutualFundsParser(Parser):
                 market_value,
             )
 
+            if record.mkt_value == 0:
+                continue
+
             # simply set the peso->dollar rate to 50->1
             if fund_name.startswith("DOLLAR"):
                 record.mkt_value *= 55

@@ -21,21 +21,16 @@ class InsurancePoliciesParser(Parser):
         face_amounts = {
             "030021198": 250_000,
             "031300038": 560_000,
-            "0800121961": 44_368,
-            "0800261739": 25_000,
-            "0808250019": 275_000,
+            "0852216190": 625_000,
         }
         for policy in policy_rows:
             tds = policy.find_all("td")
             policy_number = tds[0].text.strip()
             policy_name = tds[1].text.strip()
-            face_amount = face_amounts[policy_number]
+            face_amount = face_amounts.get(policy_number)
 
-            # since life insurance policy is currently mortgaged to PSBank
-            # exclude them from list
-            if policy_number == "031300038":
+            if not face_amount:
                 continue
-
             record = BankAccount(
                 self.date,
                 "Sunlife",
