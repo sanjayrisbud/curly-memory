@@ -12,7 +12,7 @@ class DatabaseInterface:
     def __init__(self, db_file, db_engine):
         self._db_file = db_file
         self._db_engine = db_engine
-        self.date_from = datetime(2023, 1, 1)
+        self.date_from = datetime(2024, 1, 1)
 
     def archive_db_file(self):
         """Archive the database file."""
