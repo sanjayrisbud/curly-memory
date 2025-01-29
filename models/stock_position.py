@@ -12,13 +12,14 @@ class StockPosition(Base, ModelsParent):
     mkt_value = Column(Float)
     total_cost = Column(Float)
 
-    def __init__(self, *args):
+    def __init__(self, *args, company=None):
         date, stock, shares, mkt_value, total_cost = args
         self.date = date
         self.stock = stock
         self.shares = int(shares)
         self.mkt_value = float(mkt_value)
         self.total_cost = float(total_cost)
+        self.company = company
 
     def neither_bought_nor_sellable(self):
         """Return True if the shares were neither bought nor sellable."""

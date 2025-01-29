@@ -18,11 +18,7 @@ class InsurancePoliciesParser(Parser):
             "tr", attrs={"ng-repeat": re.compile(r".*policy.*")}
         )
 
-        face_amounts = {
-            "030021198": 250_000,
-            "031300038": 560_000,
-            "0852216190": 625_000,
-        }
+        face_amounts = self.additional_data["policy_face_amounts"]
         for policy in policy_rows:
             tds = policy.find_all("td")
             policy_number = tds[0].text.strip()

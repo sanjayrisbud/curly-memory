@@ -1,5 +1,4 @@
 """Defines MutualFundsParser class."""
-import re
 from extractors.webpage_extractor import WebpageExtractor
 from models.stock_position import StockPosition
 from parsers.parser import Parser
@@ -14,37 +13,26 @@ class MutualFundsParser(Parser):
 
     def parse(self):
         """Parse the mutual funds' information."""
-        fund_rows = self.extractor.raw_data.find_all(
-            "tr", attrs={"ng-repeat": re.compile(r".*fund.*")}
-        )
 
-        for fund in fund_rows:
-            tds = fund.find_all("td")
-            fund_name = tds[1].text.strip()
-            fund_shares = 0
-            market_value = float(
-                tds[4]
-                .text.replace(",", "")
-                .replace("PHP", "")
-                .replace("USD", "")
-                .strip()
-            )
+        for fund in self.additional_data["mutual_funds"]:
+            fund_name = fund["name"]
+            fund_shares = fund["shares"]
+            market_value = fund["market_value"]
+            total_cost = fund["total_cost"]
+            company = fund["company"]
 
             record = StockPosition(
                 self.date,
                 fund_name,
                 fund_shares,
                 market_value,
-                market_value,
+                total_cost,
+                company=company
             )
 
-            if record.mkt_value == 0:
-                continue
-
-            # simply set the peso->dollar rate to 50->1
             if fund_name.startswith("DOLLAR"):
-                record.mkt_value *= 55
-                record.total_cost = record.mkt_value
+                record.mkt_value *= self.additional_data["php_to_1_usd"]
+                record.total_cost  *= self.additional_data["php_to_1_usd"]
 
             self.parsed_data.append(record)
             self.total_amount += record.mkt_value

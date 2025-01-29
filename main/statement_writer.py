@@ -100,7 +100,7 @@ class StatementWriter:
         title = "Securities: bonds / mutual funds"
         header = ["Name of Security", "Company", "Market Value"]
         entries = [
-            [record.stock, "Sunlife", record.mkt_value]
+            [record.stock, record.company, record.mkt_value]
             for record in content.get("records", [])
         ]
         self.create_section(
