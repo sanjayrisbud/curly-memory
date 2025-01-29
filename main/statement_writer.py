@@ -31,7 +31,7 @@ class StatementWriter:
     def run(self, data):
         """Perform class logic."""
         self.financial_data = data
-        workbook = load_workbook(self._statement.file_object.parent / "template.xlsx")
+        workbook = load_workbook(self._statement.path / "template.xlsx")
         self.register_styles(workbook)
         assets = workbook.create_sheet("Assets")
         liabilities = workbook.create_sheet("Liabilities")

@@ -68,11 +68,15 @@ class DatabaseInterface:
 
     def store_various_financial_data(self, financial_data):
         """Store various financial data points in the database for later use."""
+        date_from = financial_data[3]["charts_begin_from_date"]
+        self.date_from = datetime.strptime(date_from, "%Y-%m-%d")
         for summ in financial_data[0]:
             summ.insert(self._db_engine)
         for account in financial_data[1]["BankAccounts"]["records"]:
             account.insert(self._db_engine)
         for stock in financial_data[1]["Portfolio"]["records"]:
+            stock.insert(self._db_engine)
+        for stock in financial_data[1]["MutualFunds"]["records"]:
             stock.insert(self._db_engine)
 
     def get_time_series_summary(self):

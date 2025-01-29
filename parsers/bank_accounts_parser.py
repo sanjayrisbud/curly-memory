@@ -17,9 +17,9 @@ class BankAccountsParser(Parser):
     def parse(self):
         """Parse the account information."""
         self.lines = self.extractor.raw_data[0].split("\n")
-        # self.lines.pop(9)  # remove unnecessary line added by Chrome plugin
-        self.lines.insert(3, "6")  # insert extra lines; before the PDF was extracted as "Deposit Accounts\n6
-        self.lines.insert(29, "1")  # now there's no more newline
+        # self.lines.pop(9)  # remove unnecessary line added by Chrome browser
+        # self.lines.insert(3, "6")  # insert extra lines; before the PDF was extracted as "Deposit Accounts\n6
+        # self.lines.insert(29, "1")  # now there's no more newline
         # determine the number of deposit accounts
         offset = self.return_line_that_starts_with("Deposit")
         offset += 1
@@ -42,8 +42,12 @@ class BankAccountsParser(Parser):
                 balance=re.search(r"[\d,\.]+", self.lines[offset + 5])[0],
             )
 
-        # MANUAL ENTRY FOR CIMB ACCT
-        self.create_entry("CIMB Bank", "GSave", "20860739494592", "345,000")
+        # entries for additional accounts
+        for account in self.additional_data["bank_accounts"]:
+            self.create_entry(account["bank"],
+                              account["account_name"],
+                              account["account_number"],
+                              account["balance"])
 
     def create_entry(self, bank, account_alias, account_number, balance):
         """Add to list of bank accounts and to total_amount (if necessary)."""

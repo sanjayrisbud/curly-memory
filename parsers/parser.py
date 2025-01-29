@@ -11,6 +11,7 @@ class Parser:
         self.extractor = None
         self.parsed_data = []
         self.total_amount = 0
+        self.additional_data = None
 
     def get_data(self):
         """Extract and parse the data from the file."""
@@ -29,3 +30,7 @@ class Parser:
     def append(self, model):
         """Append the new record to the internal list."""
         self.parsed_data.append(model)
+
+    def set_additional_data(self, additional_data):
+        """Include the additional data retrieved from the JSON file."""
+        self.additional_data = additional_data

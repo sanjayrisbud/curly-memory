@@ -9,6 +9,7 @@ from main.reports_creator import ReportsCreator
 from main.statement_writer import StatementWriter
 from models.bank_account import BankAccount
 from models.summary import Summary
+from parsers.json_file_parser import JsonFileParser
 from parsers.amortization_schedule_parser import AmortizationScheduleParser
 from parsers.bank_accounts_parser import BankAccountsParser
 from parsers.insurance_policies_parser import InsurancePoliciesParser
@@ -35,6 +36,8 @@ class FinancialStatementGenerator:
             archive_path=self.statement.archive_path,
         )
         db_engine = models.get_engine(path_for_writes + "/db.sqlite3")
+
+        self.additional_data = JsonFileParser("data.json", path, date)
 
         self.asset_parsers = [
             BankAccountsParser("BPI - Bank of the Philippine Islands.pdf", path, date),
@@ -65,12 +68,18 @@ class FinancialStatementGenerator:
 
     def mine_data(self):
         """Mine the _financial_data to be used to populate the _statement."""
+        extra = self.additional_data
+        extra.get_data()
+        extra.extractor.archive()
+
         for parser in self.asset_parsers:
+            parser.set_additional_data(extra.extractor.raw_data)
             parser.get_data()
             if parser.extractor:
                 parser.extractor.archive()
 
         for parser in self.liability_parsers:
+            parser.set_additional_data(extra.extractor.raw_data)
             parser.get_data()
 
         return self.consolidate_financial_data()
@@ -93,7 +102,7 @@ class FinancialStatementGenerator:
         summary = self.generate_summary_entries(
             assets, liabilities, self.statement.date
         )
-        return summary, assets, liabilities
+        return summary, assets, liabilities, self.additional_data.extractor.raw_data
 
     @staticmethod
     def move_credit_cards_to_liabilities(assets, liabilities):
