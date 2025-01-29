@@ -62,9 +62,10 @@ class StockPosition(Base, ModelsParent):
         with cls.get_session(engine) as session:
             return (
                 session.query(
-                    cls.date, func.sum(cls.mkt_value), func.sum(cls.total_cost)
+                    cls.date, func.sum(cls.mkt_value), func.sum(cls.total_cost), func.count(cls.stock)
                 )
                 .filter(cls.date >= date_from)
+                .filter(cls.stock.not_like("%FUND%"))
                 .group_by(cls.date)
                 .order_by(cls.date)
             )
