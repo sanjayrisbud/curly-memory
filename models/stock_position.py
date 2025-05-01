@@ -57,15 +57,26 @@ class StockPosition(Base, ModelsParent):
         return self.stock + "-->" + str(self.mkt_value)
 
     @classmethod
-    def get_market_values_and_total_costs(cls, engine, date_from):
+    def get_market_values_and_total_costs(cls, engine, date_from, fund_name):
         """Return market values and total costs, sorted by ascending date."""
         with cls.get_session(engine) as session:
+            if fund_name == "PORTFOLIO":
+                return (
+                    session.query(
+                        cls.date, func.sum(cls.mkt_value), func.sum(cls.total_cost), func.count(cls.stock)
+                    )
+                    .filter(cls.date >= date_from)
+                    .filter(cls.stock.not_like("%FUND%"))
+                    .group_by(cls.date)
+                    .order_by(cls.date)
+                )
+
             return (
                 session.query(
                     cls.date, func.sum(cls.mkt_value), func.sum(cls.total_cost), func.count(cls.stock)
                 )
                 .filter(cls.date >= date_from)
-                .filter(cls.stock.not_like("%FUND%"))
+                .filter(cls.stock.is_(fund_name))
                 .group_by(cls.date)
                 .order_by(cls.date)
             )

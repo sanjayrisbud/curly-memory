@@ -1,6 +1,7 @@
 """Defines the ReportsCreator class."""
 from openpyxl import load_workbook
 
+from charts.fund_performance import FundPerformanceChart
 from charts.portfolio_allocation import PortfolioAllocationCharts
 from charts.portfolio_performance import PortfolioPerformanceChart
 from charts.stocks_profitability import StocksProfitabilityChart
@@ -21,6 +22,7 @@ class ReportsCreator:
             ("Portfolio Allocation", PortfolioAllocationCharts),
             ("Stocks' Profitability", StocksProfitabilityChart),
             ("Portfolio Performance", PortfolioPerformanceChart),
+            ("Fund Performance", FundPerformanceChart),
         ]
 
     @property
@@ -52,7 +54,7 @@ class ReportsCreator:
         file_object = self._statement.file_object
         if not file_object.exists():
             workbook = load_workbook(
-                self._statement.file_object.parent / "template.xlsx"
+                self._statement.path / "template.xlsx"
             )
         else:
             workbook = load_workbook(file_object)

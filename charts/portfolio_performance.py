@@ -32,6 +32,7 @@ class PortfolioPerformanceChart(Chart):
             xpoints,
             market_values,
             total_costs,
-        ) = self.db_interface.get_time_series_portfolio()
+            counts
+        ) = self.db_interface.get_time_series_of_market_values_and_total_costs("PORTFOLIO")
         xpoints = [xpoint.strftime("%m/%d/%Y") for xpoint in xpoints]
         return market_values, total_costs, xpoints
