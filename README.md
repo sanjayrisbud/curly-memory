@@ -4,9 +4,11 @@ A personal financial statement generator.
 `statement_writer.py` will create my financial statement listing my assets, liabilities 
 and net worth in an Excel workbook.  
 
-<img src="screenshots/01 - summary.jpg" height="75" width="128"/>
-<img src="screenshots/02 - assets.jpg" height="75" width="128"/>
-<img src="screenshots/03 - liabilities.jpg" height="75" width="128"/> 
+<p align="left">
+    <img src="screenshots/01 - summary.jpg" height="75" width="128"/>
+    <img src="screenshots/02 - assets.jpg" height="75" width="128"/>
+    <img src="screenshots/03 - liabilities.jpg" height="75" width="128"/> 
+</p>
 
 It will read data from my bank statement, stock portfolio, loan statement of account, mutual 
 funds' statement and insurance policies' statement. These documents are in 
