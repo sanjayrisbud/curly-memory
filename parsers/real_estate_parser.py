@@ -10,8 +10,6 @@ class RealEstateParser(Parser):
         super().__init__(path, date)
         self.properties = [
             ["Unit 616 Rockfort Residences, Makati", 2014, 1_800_000, 0],
-            ["Unit 901-16 Arezzo Place, Pasig", 2015, 1_200_000, 0],
-            ["Parking Slot 5-16 Arezzo Place, Pasig", 2016, 430_000, 0],
             [
                 "Unit 1007 Tower 1, Avida Towers One Union Place, Taguig",
                 2019,
