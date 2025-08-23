@@ -20,6 +20,7 @@ class MutualFundsParser(Parser):
             market_value = fund["market_value"]
             total_cost = fund["total_cost"]
             company = fund["company"]
+            currency = fund["currency"]
 
             record = StockPosition(
                 self.date,
@@ -30,7 +31,7 @@ class MutualFundsParser(Parser):
                 company=company
             )
 
-            if fund_name.startswith("DOLLAR"):
+            if currency == "USD":
                 record.mkt_value *= self.additional_data["php_to_1_usd"]
                 record.total_cost  *= self.additional_data["php_to_1_usd"]
 
