@@ -14,20 +14,20 @@ class FundPerformanceChart(Chart):
         funds_list, xpoints_list, ratios_list = self.derive_datapoints()
         line_colors = [name for name in mcolors.TABLEAU_COLORS]
 
-
         figure, axis = plt.subplots()
         figure.set_size_inches(12, 5.6)
         figure.autofmt_xdate(rotation=45)
+        axis.set_ylim(0.8, 1.5)
 
         for i, fund in enumerate(funds_list):
             axis.plot(xpoints_list[i], ratios_list[i], line_colors[i], label=fund)
         axis.set_xlabel("Dates")
         axis.set_ylabel("Market Value / Total Cost")
-        axis.set_yticks([x/10 + 0.7 for x in range(15)])
+        axis.set_yticks([x/9 + 0.7 for x in range(10)])
         axis.yaxis.set_major_formatter("{x:.1f}")
         axis.set_title("Comparison of Fund Performances")
         axis.grid(True)
-        axis.legend()
+        axis.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         return figure
 
     def derive_datapoints(self):
