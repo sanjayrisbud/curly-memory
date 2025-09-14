@@ -77,17 +77,17 @@ I originally built this in 2021 to simplify my monthly financial check-ins — a
 
 ## 📂 Project Structure  
 
-curly-memory/
-│── assets/ # screenshots and sample report
-│── charts/ # Create visualisations
-|── extractors/# Extract data from CSV, JSON, PDF, HTML
-│── main/ # Main modules of the application's sub-apps
-│── models/ # SQLite data access layer
-│── parsers # Standardizes extracted data
-│── tests/ # Unit tests
-│── financial_stmt_generator.py # Main module of the application
-│── README.md
-
+    curly-memory/
+    │── assets/ # screenshots and sample report
+    │── charts/ # Create visualisations
+    |── extractors/# Extract data from CSV, JSON, PDF, HTML
+    │── main/ # Main modules of the application's sub-apps
+    │── models/ # SQLite data access layer
+    │── parsers # Standardizes extracted data
+    │── tests/ # Unit tests
+    │── financial_stmt_generator.py # Main module of the application
+    │── README.md
+    
 ---
 
 This project shows my ability to **turn messy, multi-source data into actionable insights** — the same foundation 
