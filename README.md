@@ -1,63 +1,94 @@
-# curly-memory
-A personal financial statement generator.
+# 💰 Curly-Memory: Personal Finance Tracker  
 
-`statement_writer.py` will create my financial statement listing my assets, liabilities 
-and net worth in an Excel workbook.  
+A Python application that consolidates my personal financial data from multiple sources into a single, easy-to-analyze 
+database. Generates automated **Excel reports with charts** to track **net worth, assets, liabilities, and 
+investments** over time.  
 
-<p align="left">
-    <img src="screenshots/01 - summary.jpg" height="75" width="128"/>
-    <img src="screenshots/02 - assets.jpg" height="75" width="128"/>
-    <img src="screenshots/03 - liabilities.jpg" height="75" width="128"/> 
-</p>
+I originally built this in 2021 to simplify my monthly financial check-ins — and I still use it today.  
 
-It will read data from my bank statement, stock portfolio, loan statement of account, mutual 
-funds' statement and insurance policies' statement. These documents are in 
-HTML, CSV, JSON and PDF formats.
+---
 
-`db_interface.py` acts as an interface to a SQLite database where all data collected from the
-different data sources is saved.
+## 🚀 Features  
 
-`reports_creator.py` will create various reports from my financial data.  Reports include:
-1. a line chart to track the values of my total assets, liabilities and net worth over time
+- **Data Ingestion**: Import statements from CSV, JSON, PDF, and HTML.  
+- **Data Cleaning**: Standardize messy inputs from banks, stocks, loans, insurance, and mutual funds.  
+- **Database**: Store and query consolidated financial data.  
+- **Automated Reporting**: Generate Excel workbooks with summary tables and charts.  
+- **Visualization**:  
+  - Assets vs Liabilities  
+  - Net worth over time  
+  - Asset allocation breakdown  
+  - Stock and mutual fund performances  
 
-<img src="screenshots/04 - saln chart.jpg" height="75" width="128"/> 
+---
 
-2. a pie chart to display the breakdown of my assets and liabilities
-3. a pie chart to display the allocation of my assets
-4. a pie chart to display the ratio of cash vs other financial instruments
+## 🛠️ Tech Stack  
 
-<img src="screenshots/05 - summaries.jpg" height="75" width="128"/> 
+- **Python**  
+- **Pandas / PDF Plumber / Beautiful Soup** for data ingestion and cleaning  
+- **SQLite** for storage  
+- **Matplotlib** for visualization  
+- **Openpyxl** for Excel export  
+- **Pytest** for unit testing  
 
-5. a stacked bar chart to display cash vs loan amount
+---
 
-<img src="screenshots/06 - cash vs loan amount.jpg" height="75" width="128"/> 
+## 📊 Example Output  
 
-6. a pie chart to display stock allocation in my portfolio with respect to share count
-7. a pie chart to display stock allocation in my portfolio with respect to total cost
+**Total assets, liabilities and net worth over time**
 
-<img src="screenshots/07 - portfolio allocation.jpg" height="75" width="128"/> 
+<img src="assets/04 - saln chart.jpg" height="75" width="128"/> 
 
-8. a bar chart to display the profitability of each stock in my portfolio
+**Asset allocation**
 
-<img src="screenshots/08 - profitability.jpg" height="75" width="128"/> 
+<img src="assets/05 - summaries.jpg" height="75" width="128"/> 
 
-9. a line chart to display my portfolio's performance over time
+**Cash vs Loan**
 
-<img src="screenshots/09 - portfolio performance.jpg" height="75" width="128"/> 
+<img src="assets/06 - cash vs loan amount.jpg" height="75" width="128"/> 
 
-10. a line chart to compare the performances of my portfolio and mutual funds over time
+**Stock Allocation**
 
-<img src="screenshots/10 - fund performance.jpg" height="75" width="128"/> 
+<img src="assets/07 - portfolio allocation.jpg" height="75" width="128"/> 
 
+**Stock Profitability**
 
-After generating the financial statement, the data files, SQLite database and generated statement 
-are archived to a predefined location. 
+<img src="assets/08 - profitability.jpg" height="75" width="128"/> 
 
-Sample Excel output is in `sample_output.xlsx`
+**Portfolio Performance**
 
-Execute the unit tests with:
+<img src="assets/09 - portfolio performance.jpg" height="75" width="128"/> 
 
-`pytest --cov . tests/ --cov-report html:tests/results/cov_html -v > tests/results/results.txt`
+**Funds' Performances**
 
-Test results will be in `tests/results/results.txt`.
-Coverage report will be in `tests/results/cov_html/index.html`.
+<img src="assets/10 - fund performance.jpg" height="75" width="128"/> 
+
+*(See `assets/sample_output.xlsx` for full report.)*  
+
+---
+
+## ✅ Why This Matters  
+
+- **Real-World Utility** → Not just a demo; I’ve used it monthly for several years.  
+- **Demonstrates Data Skills** → Cleaning, transforming, and visualizing real-world financial data.  
+- **End-to-End Project** → From ingestion → storage → analysis → reporting.  
+
+---
+
+## 📂 Project Structure  
+
+curly-memory/
+│── assets/ # screenshots and sample report
+│── charts/ # Create visualisations
+|── extractors/# Extract data from CSV, JSON, PDF, HTML
+│── main/ # Main modules of the application's sub-apps
+│── models/ # SQLite data access layer
+│── parsers # Standardizes extracted data
+│── tests/ # Unit tests
+│── financial_stmt_generator.py # Main module of the application
+│── README.md
+
+---
+
+This project shows my ability to **turn messy, multi-source data into actionable insights** — the same foundation 
+that powers my work in **data analytics and reporting**.  
