@@ -35,33 +35,33 @@ I originally built this in 2021 to simplify my monthly financial check-ins — a
 
 ## 📊 Example Output  
 
+**Summaries of my assets and liabilities**
+
+<p align="left">
+    <img src="assets/01 - summary.jpg" height="75" width="128"/>
+    <img src="assets/02 - assets.jpg" height="75" width="128"/>
+    <img src="assets/03 - liabilities.jpg" height="75" width="128"/> 
+</p>
+
 **Total assets, liabilities and net worth over time**
 
 <img src="assets/04 - saln chart.jpg" height="75" width="128"/> 
 
 **Asset allocation**
 
-<img src="assets/05 - summaries.jpg" height="75" width="128"/> 
+<p align="left">
+    <img src="assets/05 - summaries.jpg" height="75" width="128"/> 
+    <img src="assets/06 - cash vs loan amount.jpg" height="75" width="128"/> 
+    <img src="assets/07 - portfolio allocation.jpg" height="75" width="128"/> 
+</p>
 
-**Cash vs Loan**
+**Stock, Portfolio and Funds' Performances**
 
-<img src="assets/06 - cash vs loan amount.jpg" height="75" width="128"/> 
-
-**Stock Allocation**
-
-<img src="assets/07 - portfolio allocation.jpg" height="75" width="128"/> 
-
-**Stock Profitability**
-
-<img src="assets/08 - profitability.jpg" height="75" width="128"/> 
-
-**Portfolio Performance**
-
-<img src="assets/09 - portfolio performance.jpg" height="75" width="128"/> 
-
-**Funds' Performances**
-
-<img src="assets/10 - fund performance.jpg" height="75" width="128"/> 
+<p align="left">
+    <img src="assets/08 - profitability.jpg" height="75" width="128"/> 
+    <img src="assets/09 - portfolio performance.jpg" height="75" width="128"/> 
+    <img src="assets/10 - fund performance.jpg" height="75" width="128"/> 
+</p>
 
 *(See `assets/sample_output.xlsx` for full report.)*  
 
