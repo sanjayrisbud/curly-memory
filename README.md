@@ -25,7 +25,7 @@ I originally built this in 2021 to simplify my monthly financial check-ins — a
 ## 🛠️ Tech Stack  
 
 - **Python**  
-- **Pandas / PDF Plumber / Beautiful Soup** for data ingestion and cleaning  
+- **PDF Plumber / Beautiful Soup** for data ingestion and cleaning  
 - **SQLite** for storage  
 - **Matplotlib** for visualization  
 - **Openpyxl** for Excel export  
